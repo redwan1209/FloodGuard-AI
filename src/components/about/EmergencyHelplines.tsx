@@ -21,18 +21,18 @@ export const EmergencyHelplines: React.FC = () => {
   };
 
   return (
-    <section aria-label="Official Disaster Helplines Directory" className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 sm:p-6 shadow-xl space-y-5">
+    <section aria-label="Official Disaster Helplines Directory" className="bg-white border border-slate-200 rounded-lg p-4 sm:p-5 shadow-sm space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-red-500/20 text-red-400 border border-red-500/30 flex items-center justify-center">
-              <PhoneCall className="w-5 h-5" />
+            <div className="w-8 h-8 rounded bg-red-50 text-red-700 border border-red-200 flex items-center justify-center">
+              <PhoneCall className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="text-base sm:text-lg font-bold text-white">
-                Official Indian Disaster & Rescue Helplines Directory
+              <h3 className="text-base sm:text-lg font-bold text-slate-900">
+                Official Disaster & Rescue Helplines Directory
               </h3>
-              <p className="text-xs text-slate-400 mt-0.5">
+              <p className="text-xs text-slate-500 mt-0.5">
                 Direct emergency response control rooms for search, water rescue, and relief coordination
               </p>
             </div>
@@ -41,18 +41,18 @@ export const EmergencyHelplines: React.FC = () => {
 
         {/* Search */}
         <div className="relative w-full sm:w-72">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3 pointer-events-none" />
+          <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5 pointer-events-none" />
           <input
             type="text"
             placeholder="Search state, agency or phone..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-8 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500 transition-all"
+            className="w-full bg-white border border-slate-300 rounded pl-9 pr-8 py-1.5 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-all"
           />
           {searchQuery && (
             <button
               onClick={() => setSearchQuery('')}
-              className="absolute right-2.5 top-2.5 text-slate-400 hover:text-white"
+              className="absolute right-2.5 top-2 text-slate-400 hover:text-slate-700"
             >
               <X className="w-4 h-4" />
             </button>
@@ -61,39 +61,39 @@ export const EmergencyHelplines: React.FC = () => {
       </div>
 
       {/* Grid of Emergency Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
         {filtered.map((contact) => (
           <div
             key={contact.id}
-            className="bg-slate-950/70 border border-slate-800 rounded-xl p-4 sm:p-5 flex flex-col justify-between hover:border-slate-700 transition-all shadow-sm"
+            className="bg-slate-50 border border-slate-200 rounded p-4 flex flex-col justify-between hover:border-slate-300 transition-all shadow-2xs"
           >
             <div>
               <div className="flex items-start justify-between gap-2">
                 <div>
-                  <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-slate-800 text-cyan-400 border border-slate-700/60">
+                  <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-blue-50 text-blue-800 border border-blue-200">
                     {contact.type}
                   </span>
-                  <h4 className="font-bold text-sm sm:text-base text-white mt-1.5 leading-snug">
+                  <h4 className="font-bold text-sm sm:text-base text-slate-900 mt-1.5 leading-snug">
                     {contact.name}
                   </h4>
-                  <p className="text-xs text-slate-400 font-medium">{contact.agency}</p>
+                  <p className="text-xs text-slate-600 font-medium">{contact.agency}</p>
                 </div>
                 {contact.available24x7 && (
-                  <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full shrink-0">
+                  <span className="text-[10px] font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded shrink-0">
                     24x7
                   </span>
                 )}
               </div>
 
-              <p className="mt-3 text-[11px] text-slate-400 border-t border-slate-800/80 pt-2.5">
-                <strong className="text-slate-300">Jurisdiction:</strong> {contact.jurisdiction}
+              <p className="mt-3 text-[11px] text-slate-600 border-t border-slate-200 pt-2.5">
+                <strong className="text-slate-800">Jurisdiction:</strong> {contact.jurisdiction}
               </p>
             </div>
 
-            <div className="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between gap-2">
+            <div className="mt-3.5 pt-3 border-t border-slate-200 flex items-center justify-between gap-2">
               <a
                 href={`tel:${contact.phone}`}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-600 hover:bg-red-500 text-white text-xs font-bold shadow-sm transition-all active:scale-95"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-red-600 hover:bg-red-700 text-white text-xs font-bold shadow-2xs transition-colors"
               >
                 <PhoneCall className="w-3.5 h-3.5" />
                 <span>Call {contact.phone}</span>
@@ -102,10 +102,10 @@ export const EmergencyHelplines: React.FC = () => {
               <button
                 onClick={() => handleCopy(contact.id, contact.phone)}
                 title="Copy phone number"
-                className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white border border-slate-700 transition-colors"
+                className="p-1.5 rounded bg-white hover:bg-slate-100 text-slate-600 hover:text-slate-900 border border-slate-200 transition-colors"
               >
                 {copiedId === contact.id ? (
-                  <Check className="w-3.5 h-3.5 text-emerald-400" />
+                  <Check className="w-3.5 h-3.5 text-emerald-600" />
                 ) : (
                   <Copy className="w-3.5 h-3.5" />
                 )}

@@ -91,15 +91,15 @@ export const SurvivalKit: React.FC = () => {
   const progressPercent = Math.round((checkedIds.size / DEFAULT_ITEMS.length) * 100);
 
   return (
-    <section aria-label="Survival Grab-Bag Readiness" className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 sm:p-6 shadow-xl space-y-4">
+    <section aria-label="Survival Grab-Bag Readiness" className="bg-white border border-slate-200 rounded-lg p-4 sm:p-5 shadow-sm space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h3 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
-            <Backpack className="w-5 h-5 text-cyan-400" />
+          <h3 className="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+            <Backpack className="w-5 h-5 text-blue-700" />
             <span>72-Hour "Go-Bag" Survival Readiness Checklist</span>
           </h3>
-          <p className="text-xs text-slate-400 mt-0.5">
-            Essential emergency supplies recommended by NDMA for rapid household evacuation
+          <p className="text-xs text-slate-500 mt-0.5">
+            Essential emergency supplies recommended by NDMA for rapid household flood evacuation
           </p>
         </div>
 
@@ -107,30 +107,30 @@ export const SurvivalKit: React.FC = () => {
           <div className="flex items-center gap-1.5">
             <button
               onClick={selectAll}
-              className="text-[11px] font-semibold text-cyan-400 hover:text-cyan-300 px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 transition-colors"
+              className="text-[11px] font-semibold text-blue-700 hover:text-blue-800 px-2 py-1 rounded bg-slate-100 hover:bg-slate-200 border border-slate-200 transition-colors"
             >
               Check All
             </button>
             <button
               onClick={clearAll}
-              className="text-[11px] font-semibold text-slate-400 hover:text-slate-300 px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 transition-colors"
+              className="text-[11px] font-semibold text-slate-500 hover:text-slate-700 px-2 py-1 rounded bg-slate-100 hover:bg-slate-200 border border-slate-200 transition-colors"
             >
               Clear
             </button>
           </div>
 
           <div className="text-right">
-            <span className="text-xs font-bold text-slate-200">
+            <span className="text-xs font-bold text-slate-800">
               Readiness: {checkedIds.size} / {DEFAULT_ITEMS.length} ({progressPercent}%)
             </span>
-            <div className="w-32 sm:w-40 bg-slate-800 rounded-full h-2 mt-1 overflow-hidden shadow-inner">
+            <div className="w-32 sm:w-40 bg-slate-100 rounded-full h-2 mt-1 overflow-hidden border border-slate-200">
               <div
                 className={`h-full rounded-full transition-all duration-500 ${
                   progressPercent === 100
-                    ? 'bg-emerald-400'
+                    ? 'bg-emerald-600'
                     : progressPercent >= 60
-                    ? 'bg-cyan-400'
-                    : 'bg-amber-400'
+                    ? 'bg-blue-600'
+                    : 'bg-amber-500'
                 }`}
                 style={{ width: `${progressPercent}%` }}
               />
@@ -145,10 +145,10 @@ export const SurvivalKit: React.FC = () => {
           <button
             key={cat}
             onClick={() => setActiveCategory(cat)}
-            className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all ${
+            className={`px-2.5 py-1 rounded text-xs font-semibold transition-all ${
               activeCategory === cat
-                ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/35'
-                : 'text-slate-400 hover:text-slate-200 bg-slate-950/60 border border-slate-800'
+                ? 'bg-blue-50 text-blue-800 border border-blue-200 font-bold shadow-2xs'
+                : 'text-slate-600 hover:text-slate-900 bg-slate-100 border border-slate-200'
             }`}
           >
             {cat === 'ALL' ? 'All Items' : cat}
@@ -163,33 +163,33 @@ export const SurvivalKit: React.FC = () => {
             <div
               key={item.id}
               onClick={() => toggleItem(item.id)}
-              className={`p-3.5 rounded-xl border transition-all cursor-pointer select-none flex items-start gap-3 shadow-sm ${
+              className={`p-3.5 rounded border transition-all cursor-pointer select-none flex items-start gap-3 shadow-2xs ${
                 isDone
-                  ? 'bg-slate-950/90 border-cyan-500/50 hover:border-cyan-400'
-                  : 'bg-slate-950/40 border-slate-800/80 hover:border-slate-700'
+                  ? 'bg-blue-50/50 border-blue-300 hover:border-blue-400'
+                  : 'bg-slate-50 border-slate-200 hover:border-slate-300'
               }`}
             >
               <div className="mt-0.5 shrink-0">
                 {isDone ? (
-                  <CheckCircle className="w-5 h-5 text-cyan-400 fill-cyan-500/20" />
+                  <CheckCircle className="w-5 h-5 text-blue-600 fill-blue-100" />
                 ) : (
-                  <Circle className="w-5 h-5 text-slate-600" />
+                  <Circle className="w-5 h-5 text-slate-300" />
                 )}
               </div>
               <div className="flex-1">
                 <div className="flex items-center justify-between gap-2">
                   <span
                     className={`text-xs font-bold leading-tight ${
-                      isDone ? 'text-white' : 'text-slate-300'
+                      isDone ? 'text-slate-900' : 'text-slate-700'
                     }`}
                   >
                     {item.name}
                   </span>
-                  <span className="text-[10px] uppercase font-bold px-1.5 py-0.2 rounded bg-slate-800 text-slate-400 border border-slate-700/60 shrink-0">
+                  <span className="text-[10px] uppercase font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200 shrink-0">
                     {item.category}
                   </span>
                 </div>
-                <p className="text-[11px] text-slate-400 mt-1 leading-snug">{item.detail}</p>
+                <p className="text-[11px] text-slate-500 mt-1 leading-snug">{item.detail}</p>
               </div>
             </div>
           );

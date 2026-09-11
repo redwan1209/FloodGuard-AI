@@ -1,7 +1,7 @@
 import React from 'react';
 import { FloodBasin, FloodRiskAssessment } from '../../types';
 import { FLOOD_BASINS } from '../../data/basins';
-import { Shield, Waves, PhoneCall, Radio, RefreshCw, MapPin, ChevronDown } from 'lucide-react';
+import { Shield, Waves, PhoneCall, Radio, RefreshCw, MapPin, ChevronDown, Clock } from 'lucide-react';
 
 interface NavbarProps {
   selectedBasin: FloodBasin;
@@ -26,59 +26,65 @@ export const Navbar: React.FC<NavbarProps> = ({
   onToggleLanguage,
   onRefresh
 }) => {
-  const getBadgeStyle = () => {
+  // Functional, restrained government risk styling
+  const getRiskBadgeStyle = () => {
     switch (riskAssessment.riskLevel) {
       case 'SEVERE':
-        return 'bg-red-500/20 text-red-400 border-red-500/40 animate-pulse';
+        return 'bg-red-700 text-white border-red-800';
       case 'HIGH':
-        return 'bg-orange-500/20 text-orange-400 border-orange-500/40';
+        return 'bg-orange-600 text-white border-orange-700';
       case 'MODERATE':
-        return 'bg-amber-500/20 text-amber-400 border-amber-500/40';
+        return 'bg-amber-500 text-slate-950 border-amber-600';
       default:
-        return 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40';
+        return 'bg-emerald-600 text-white border-emerald-700';
     }
   };
 
   const getRiskText = () => {
     if (language === 'HI') {
       switch (riskAssessment.riskLevel) {
-        case 'SEVERE': return 'अति गंभीर (RED)';
-        case 'HIGH': return 'गंभीर (ORANGE)';
-        case 'MODERATE': return 'मध्यम (YELLOW)';
-        default: return 'सामान्य (GREEN)';
+        case 'SEVERE': return 'अति गंभीर (SEVERE)';
+        case 'HIGH': return 'गंभीर (HIGH)';
+        case 'MODERATE': return 'चेतावनी (WARNING)';
+        default: return 'सामान्य (NORMAL)';
       }
     }
-    return `${riskAssessment.riskLevel} ALERT`;
+    return riskAssessment.riskLevel;
   };
 
+  const formattedDate = new Date().toLocaleDateString('en-IN', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric'
+  });
+
   return (
-    <header className="bg-slate-900/95 backdrop-blur-md border-b border-slate-800 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2 sm:gap-4">
-        {/* Brand */}
-        <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
-          <div className="relative flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 shadow-lg shadow-cyan-500/20 text-white">
-            <Waves className="w-5 h-5 absolute text-cyan-200 opacity-60" />
-            <Shield className="w-5 h-5 sm:w-6 sm:h-6 relative z-10" />
+    <header className="bg-[#0f2744] text-white border-b border-[#1c3d64] sticky top-0 z-50 shadow-md">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-14 flex items-center justify-between gap-1.5 sm:gap-4">
+        {/* Brand & System Identity */}
+        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+          <div className="flex items-center justify-center w-8 h-8 rounded bg-[#1e40af] border border-blue-400/40 text-white shadow-sm">
+            <Waves className="w-5 h-5 text-blue-200" />
           </div>
           <div>
-            <div className="flex items-center gap-1.5">
-              <span className="font-extrabold text-base sm:text-lg tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent">
-                FloodGuard
-              </span>
-              <span className="text-[10px] sm:text-xs font-bold px-1.5 py-0.2 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
-                AI
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <h1 className="font-bold text-sm sm:text-base tracking-tight text-white leading-tight">
+                FloodGuard AI
+              </h1>
+              <span className="hidden xs:inline-block text-[10px] uppercase font-semibold px-1.5 py-0.5 rounded bg-blue-900/80 text-blue-200 border border-blue-700/60 tracking-wider">
+                GIS Portal
               </span>
             </div>
-            <p className="text-[10px] text-slate-400 hidden sm:block font-medium">
-              {language === 'HI' ? 'भारत बाढ़ पूर्वानुमान एवं बचाव प्रणाली' : 'India Flood Intelligence & Evacuation System'}
+            <p className="text-[11px] text-blue-200/80 hidden md:block font-normal">
+              {language === 'HI' ? 'बाढ़ पूर्वानुमान एवं जल-मौसम निगरानी प्रणाली' : 'Flood Intelligence & Hydrological Monitoring System'}
             </p>
           </div>
         </div>
 
-        {/* Center: Basin Selector with location pin icon and styled dropdown */}
-        <div className="flex-1 max-w-xs sm:max-w-sm md:max-w-md mx-1 sm:mx-2">
+        {/* Center: Monitored Region Selector */}
+        <div className="flex-1 max-w-[150px] sm:max-w-xs md:max-w-md mx-1 sm:mx-2 min-w-0">
           <div className="relative flex items-center">
-            <MapPin className="w-3.5 h-3.5 text-cyan-400 absolute left-3 pointer-events-none z-10" />
+            <MapPin className="w-3.5 h-3.5 text-blue-300 absolute left-2 pointer-events-none z-10" />
             <select
               value={selectedBasin.id}
               onChange={(e) => {
@@ -86,64 +92,70 @@ export const Navbar: React.FC<NavbarProps> = ({
                 if (found) onSelectBasin(found);
               }}
               aria-label="Select Monitored River Basin"
-              className="w-full appearance-none bg-slate-800/95 text-slate-100 text-xs sm:text-sm font-medium rounded-lg pl-8 pr-8 py-2 border border-slate-700 hover:border-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500 transition-all cursor-pointer truncate shadow-inner"
+              className="w-full appearance-none bg-[#163359] text-white text-xs font-semibold rounded pl-7 pr-6 py-1.5 border border-[#2b5280] hover:border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-400 cursor-pointer truncate shadow-inner"
             >
               {FLOOD_BASINS.map((b) => (
-                <option key={b.id} value={b.id} className="bg-slate-900 text-slate-100 py-1">
-                  {b.name} ({b.state}) — {b.riverName}
+                <option key={b.id} value={b.id} className="bg-slate-900 text-white">
+                  {b.name} ({b.state})
                 </option>
               ))}
             </select>
-            <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2.5 pointer-events-none z-10" />
+            <ChevronDown className="w-3.5 h-3.5 text-blue-300 absolute right-1.5 pointer-events-none z-10" />
           </div>
         </div>
 
-        {/* Right side controls */}
+        {/* Right side operational controls */}
         <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
-          {/* Risk Level Pill */}
-          <div className={`hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-xs font-semibold ${getBadgeStyle()}`}>
-            <span className="w-1.5 h-1.5 rounded-full bg-current"></span>
+          {/* Real-time Risk Status Pill (sm+) */}
+          <div className={`hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-bold border shadow-sm ${getRiskBadgeStyle()}`}>
+            <span className="w-2 h-2 rounded-full bg-current opacity-90"></span>
             <span>{getRiskText()}</span>
-            <span className="opacity-90 font-mono">({riskAssessment.overallScore}/100)</span>
+            <span className="font-mono opacity-90">({riskAssessment.overallScore}/100)</span>
           </div>
 
-          {/* Live Data Badge */}
+          {/* Date & Time display */}
+          <div className="hidden xl:flex items-center gap-1 text-[11px] text-blue-200/90 bg-[#163359] px-2 py-1 rounded border border-[#2b5280]">
+            <Clock className="w-3 h-3 text-blue-300" />
+            <span className="font-mono">{formattedDate}</span>
+          </div>
+
+          {/* Live Data Status */}
           <div
-            title={isWeatherLive ? 'Connected to Open-Meteo High-Resolution Global Forecast API' : 'Using calibrated historical monsoon baseline'}
-            className="hidden lg:flex items-center gap-1.5 text-[11px] text-slate-400 bg-slate-800/70 hover:bg-slate-800 px-2.5 py-1 rounded-md border border-slate-700/80 transition-colors"
+            title={isWeatherLive ? 'Open-Meteo High-Resolution Live Forecast Connected' : 'Calibrated Historical Baseline'}
+            className="hidden lg:flex items-center gap-1.5 text-[11px] text-blue-200/90 bg-[#163359] px-2 py-1 rounded border border-[#2b5280]"
           >
-            <Radio className={`w-3 h-3 ${isWeatherLive ? 'text-emerald-400 animate-pulse' : 'text-amber-400'}`} />
-            <span>{isWeatherLive ? 'Weather: Live API' : 'Weather: Baseline'}</span>
+            <Radio className={`w-3 h-3 ${isWeatherLive ? 'text-emerald-400' : 'text-amber-300'}`} />
+            <span className="font-medium">{isWeatherLive ? 'Live API' : 'Calibrated'}</span>
           </div>
 
           {/* Refresh button */}
           <button
             onClick={onRefresh}
-            aria-label="Refresh weather and sensor feeds"
-            title="Refresh weather and sensor feeds"
-            className="p-2 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 hover:border-slate-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 transition-all active:scale-95"
+            aria-label="Refresh telemetry feeds"
+            title="Refresh weather and river telemetry"
+            className="hidden sm:inline-flex p-1.5 rounded bg-[#163359] hover:bg-[#1f4370] text-blue-200 hover:text-white border border-[#2b5280] transition-colors"
           >
-            <RefreshCw className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${isRefreshing ? 'animate-spin text-cyan-400' : ''}`} />
+            <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-blue-200' : ''}`} />
           </button>
 
-          {/* Language toggle */}
+          {/* Language Toggle */}
           <button
             onClick={onToggleLanguage}
             aria-label="Toggle language between English and Hindi"
-            className="px-2 sm:px-2.5 py-1 rounded text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 hover:border-slate-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 transition-all active:scale-95"
-            title="Switch language (English / हिन्दी)"
+            className="px-2 py-1 rounded text-xs font-bold bg-[#163359] hover:bg-[#1f4370] text-blue-200 hover:text-white border border-[#2b5280] transition-colors"
+            title="Switch Language"
           >
             {language === 'EN' ? 'हिन्दी' : 'EN'}
           </button>
 
-          {/* SOS Helplines Modal Trigger */}
+          {/* Emergency SOS Control */}
           <button
             onClick={onOpenSosModal}
-            aria-label="Open Emergency SOS 112 Rescue Helpline Modal"
-            className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg bg-red-600 hover:bg-red-500 text-white text-xs font-bold shadow-lg shadow-red-600/30 border border-red-500/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400 transition-all active:scale-95"
+            aria-label="Emergency Helplines Dispatch"
+            className="flex items-center gap-1 px-2 py-1 rounded bg-red-700 hover:bg-red-600 text-white text-xs font-bold border border-red-800 shadow-sm transition-colors active:scale-95"
           >
-            <PhoneCall className="w-3.5 h-3.5 animate-bounce" />
-            <span className="font-mono">SOS 112</span>
+            <PhoneCall className="w-3 h-3" />
+            <span className="font-mono tracking-tight text-[11px] sm:text-xs">SOS 112</span>
           </button>
         </div>
       </div>

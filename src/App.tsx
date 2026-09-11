@@ -96,16 +96,16 @@ export const App: React.FC = () => {
 
   if (!weather || !currentAssessment || !baselineAssessment) {
     return (
-      <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center text-slate-300">
-        <div className="w-12 h-12 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin mb-4" />
-        <p className="text-sm font-semibold tracking-wide">Initializing FloodGuard AI Hydrological Engine...</p>
+      <div className="min-h-screen bg-slate-100 flex flex-col items-center justify-center text-slate-700">
+        <div className="w-10 h-10 border-3 border-[#0f2744] border-t-transparent rounded-full animate-spin mb-4" />
+        <p className="text-sm font-bold text-slate-900 tracking-tight">Initializing FloodGuard AI Hydrological Engine...</p>
         <p className="text-xs text-slate-500 mt-1">Connecting to CWC India gauges and Open-Meteo feeds</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100 selection:bg-cyan-500 selection:text-white">
+    <div className="min-h-screen flex flex-col bg-slate-100 text-slate-900 selection:bg-blue-600 selection:text-white overflow-x-hidden w-full">
       {/* Top Prototype Disclaimer Banner */}
       <SafetyBanner onOpenMethodology={() => setIsMethodologyOpen(true)} language={language} />
 
@@ -126,11 +126,11 @@ export const App: React.FC = () => {
       <TabNav activeTab={activeTab} onChangeTab={setActiveTab} language={language} />
 
       {/* Main Content Area */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
-        {/* Tab 1: Live Monitor & Dashboard */}
+      <main className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-5 space-y-5">
+        {/* Tab 1: Live Monitor & Dashboard (Overview & GIS Map Hero) */}
         {activeTab === 'dashboard' && (
-          <div className="space-y-6 animate-in fade-in duration-300">
-            {/* 2-Minute Judge Demo Experience Tour (Phase 6) */}
+          <div className="space-y-3.5 sm:space-y-4 animate-in fade-in duration-300">
+            {/* Operational Verification Protocol */}
             <JudgeDemoGuide
               basin={selectedBasin}
               assessment={currentAssessment}
@@ -145,7 +145,16 @@ export const App: React.FC = () => {
               onNavigateTab={(tab) => setActiveTab(tab)}
             />
 
-            {/* Top Metric Cards */}
+            {/* Primary GIS Flood Map Hero Workspace */}
+            <FloodMap
+              basin={selectedBasin}
+              gauges={basinGauges}
+              shelters={basinShelters}
+              assessment={currentAssessment}
+              onSelectShelter={() => setActiveTab('evacuation')}
+            />
+
+            {/* CWC River Gauge Monitoring Stations Table & Metrics */}
             <MetricCards
               basin={selectedBasin}
               gauges={basinGauges}
@@ -153,21 +162,25 @@ export const App: React.FC = () => {
               assessment={currentAssessment}
             />
 
-            {/* Circular Risk Score & Recommendation Card */}
-            <RiskScoreCard
-              assessment={currentAssessment}
-              basin={selectedBasin}
-              onNavigateToEvac={() => setActiveTab('evacuation')}
-              onNavigateToMap={() => setActiveTab('map')}
-            />
-
-            {/* 4-Pillar MCDA Factor Breakdown */}
-            <FactorBreakdown
-              assessment={currentAssessment}
-              basin={selectedBasin}
-              gauges={basinGauges}
-              weather={weather}
-            />
+            {/* Risk Assessment Report & MCDA Factor Breakdown Grid */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+              <div className="lg:col-span-5">
+                <RiskScoreCard
+                  assessment={currentAssessment}
+                  basin={selectedBasin}
+                  onNavigateToEvac={() => setActiveTab('evacuation')}
+                  onNavigateToMap={() => setActiveTab('map')}
+                />
+              </div>
+              <div className="lg:col-span-7">
+                <FactorBreakdown
+                  assessment={currentAssessment}
+                  basin={selectedBasin}
+                  gauges={basinGauges}
+                  weather={weather}
+                />
+              </div>
+            </div>
 
             {/* Public Advisory Dispatch Card */}
             <AlertBroadcast
@@ -178,19 +191,19 @@ export const App: React.FC = () => {
           </div>
         )}
 
-        {/* Tab 2: Interactive Hazard Map */}
+        {/* Tab 2: Interactive Hazard Map (Dedicated Full View) */}
         {activeTab === 'map' && (
-          <div className="space-y-6 animate-in fade-in duration-300">
-            <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="space-y-4 animate-in fade-in duration-300">
+            <div className="flex flex-wrap items-center justify-between gap-3 bg-white p-3.5 rounded-lg border border-slate-200 shadow-xs">
               <div>
-                <h2 className="text-xl font-bold text-white">
-                  {selectedBasin.name} — Geospatial Hazard Map
+                <h2 className="text-base sm:text-lg font-bold text-slate-900">
+                  {selectedBasin.name} — Geospatial Hydrological Hazard Map
                 </h2>
-                <p className="text-xs text-slate-400 mt-0.5">
-                  Interactive spatial layers showing CWC telemetry gauges, inundation buffers, and designated relief shelters
+                <p className="text-xs text-slate-500">
+                  Interactive spatial layers showing CWC telemetry gauges, modeled inundation footprints, and high-ground shelters
                 </p>
               </div>
-              <span className="text-xs font-semibold px-2.5 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700">
+              <span className="text-xs font-semibold px-2.5 py-1 rounded bg-slate-100 text-slate-700 border border-slate-200">
                 Basin Catchment: {selectedBasin.catchmentAreaSqKm.toLocaleString()} km²
               </span>
             </div>
@@ -207,18 +220,18 @@ export const App: React.FC = () => {
 
         {/* Tab 3: Basin Analytics & Telemetry */}
         {activeTab === 'analytics' && (
-          <div className="space-y-6 animate-in fade-in duration-300">
-            <div>
-              <h2 className="text-xl font-bold text-white">
-                Hydrological & Meteorological Telemetry
+          <div className="space-y-5 animate-in fade-in duration-300">
+            <div className="bg-white p-3.5 rounded-lg border border-slate-200 shadow-xs">
+              <h2 className="text-base sm:text-lg font-bold text-slate-900">
+                Hydrological & Meteorological Telemetry Records
               </h2>
-              <p className="text-xs text-slate-400 mt-0.5">
-                Time-series hydrographs, CWC danger thresholds, and 72-hour precipitation forecast curves
+              <p className="text-xs text-slate-500">
+                Calibrated CWC hydrographs, warning & danger marks, and 72-hour precipitation forecast curves
               </p>
             </div>
 
             {/* River Hydrographs for all gauges in this basin */}
-            <div className="space-y-6">
+            <div className="space-y-5">
               {basinGauges.map((g) => (
                 <HydrographChart key={g.id} gauge={g} />
               ))}
@@ -227,19 +240,19 @@ export const App: React.FC = () => {
             {/* Rainfall & Soil Saturation */}
             <RainfallChart weather={weather} />
 
-            {/* Documented Historical Flood Events Atlas (Task 5) */}
+            {/* Documented Historical Flood Events Atlas */}
             <HistoricalEventsCard basin={selectedBasin} />
           </div>
         )}
 
         {/* Tab 4: Evacuation & Safe Shelters */}
         {activeTab === 'evacuation' && (
-          <div className="space-y-6 animate-in fade-in duration-300">
-            <div>
-              <h2 className="text-xl font-bold text-white">
-                Disaster Evacuation & Shelter Center
+          <div className="space-y-5 animate-in fade-in duration-300">
+            <div className="bg-white p-3.5 rounded-lg border border-slate-200 shadow-xs">
+              <h2 className="text-base sm:text-lg font-bold text-slate-900">
+                Disaster Evacuation & Relief Shelter Management
               </h2>
-              <p className="text-xs text-slate-400 mt-0.5">
+              <p className="text-xs text-slate-500">
                 Designated high-ground relief camps, 72-hour survival grab-bag checklist, and priority evacuation passes
               </p>
             </div>
@@ -257,7 +270,7 @@ export const App: React.FC = () => {
 
         {/* Tab 5: Scenario Simulator (What-If) */}
         {activeTab === 'simulator' && (
-          <div className="space-y-6 animate-in fade-in duration-300">
+          <div className="space-y-5 animate-in fade-in duration-300">
             <ScenarioSimulator
               basin={selectedBasin}
               simParams={simParams}
@@ -273,7 +286,7 @@ export const App: React.FC = () => {
 
         {/* Tab 6: Methodology & Helplines */}
         {activeTab === 'about' && (
-          <div className="space-y-6 animate-in fade-in duration-300">
+          <div className="space-y-5 animate-in fade-in duration-300">
             {/* Developer Profile Section */}
             <DeveloperProfile />
 
@@ -284,15 +297,15 @@ export const App: React.FC = () => {
       </main>
 
       {/* Footer */}
-      <footer className="bg-slate-900/80 border-t border-slate-800/90 py-8 mt-12 text-xs text-slate-400">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-2.5">
-              <span className="font-bold text-white text-sm">FloodGuard AI</span>
-              <span className="text-slate-500">•</span>
-              <span className="text-slate-300">AI-Powered Flood Prediction & Decision Support System</span>
-              <span className="hidden sm:inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+      <footer className="bg-white border-t border-slate-200 py-6 mt-10 text-xs text-slate-500">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-3">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <span className="font-bold text-slate-900 text-sm">FloodGuard AI</span>
+              <span className="text-slate-300">•</span>
+              <span className="text-slate-600">Hydrological Risk Monitoring & Early Warning Platform</span>
+              <span className="hidden sm:inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-200">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
                 Engine Operational
               </span>
             </div>
@@ -300,33 +313,33 @@ export const App: React.FC = () => {
             <nav className="flex flex-wrap items-center gap-3 sm:gap-4 text-xs" aria-label="Footer Navigation">
               <button
                 onClick={() => setActiveTab('about')}
-                className="text-slate-400 hover:text-cyan-400 transition-colors font-medium"
+                className="text-slate-600 hover:text-blue-800 transition-colors font-medium"
               >
                 Developer Profile
               </button>
-              <span className="text-slate-600">•</span>
+              <span className="text-slate-300">•</span>
               <button
                 onClick={() => setIsMethodologyOpen(true)}
-                className="text-slate-400 hover:text-cyan-400 transition-colors font-medium"
+                className="text-slate-600 hover:text-blue-800 transition-colors font-medium"
               >
-                Methodology & Data Sources
+                Methodology & Data Provenance
               </button>
-              <span className="text-slate-600">•</span>
+              <span className="text-slate-300">•</span>
               <button
                 onClick={() => setIsSosOpen(true)}
-                className="text-red-400 hover:text-red-300 font-bold transition-colors"
+                className="text-red-700 hover:text-red-800 font-bold transition-colors"
               >
-                Emergency Helplines (112)
+                Emergency SOS (112)
               </button>
             </nav>
           </div>
 
-          <div className="pt-4 border-t border-slate-800/60 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-slate-500">
+          <div className="pt-3 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-slate-400">
             <p>
-              Hackathon prototype intended for research & demonstration. Data calibrated on Open-Meteo, CWC benchmarks, and SRTM DEM datasets.
+              Decision-support prototype calibrated with Open-Meteo numerical weather predictions, CWC station benchmarks, and SRTM 30m DEM elevation data.
             </p>
             <p className="shrink-0">
-              Always comply with official directives from IMD, CWC, and NDMA.
+              Follow official directives issued by IMD, CWC, and NDMA for active emergency response.
             </p>
           </div>
         </div>

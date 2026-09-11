@@ -43,18 +43,18 @@ EMERGENCY HELPLINES:
   };
 
   return (
-    <section aria-label="Public Advisory and Emergency Broadcast" className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 sm:p-6 shadow-xl">
+    <section aria-label="Public Advisory and Emergency Broadcast" className="bg-white border border-slate-200 rounded-lg p-4 sm:p-5 shadow-sm">
       <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-red-500/15 text-red-400 flex items-center justify-center shadow-inner">
-            <Radio className="w-4 h-4 animate-pulse" />
+          <div className="w-8 h-8 rounded bg-red-50 text-red-700 flex items-center justify-center border border-red-200">
+            <Radio className="w-4 h-4" />
           </div>
           <div>
-            <h3 className="text-sm sm:text-base font-bold text-white">
-              Public Advisory & Emergency Broadcast Dispatcher
+            <h3 className="text-sm sm:text-base font-bold text-slate-900">
+              Official Flood Advisory & Public Broadcast Dispatcher
             </h3>
-            <p className="text-xs text-slate-400">
-              Auto-generated structured bulletin ready for WhatsApp, SMS & public address announcements
+            <p className="text-xs text-slate-500">
+              Auto-generated structured bulletin formatted for district magistrate dispatch, SMS gateway, & public sirens
             </p>
           </div>
         </div>
@@ -63,17 +63,17 @@ EMERGENCY HELPLINES:
           <button
             onClick={handleCopy}
             aria-label="Copy bulletin text to clipboard"
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white text-xs font-semibold border border-slate-700 transition-all active:scale-95"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-slate-900 text-xs font-semibold border border-slate-300 transition-colors"
           >
             {copied ? (
               <>
-                <Check className="w-3.5 h-3.5 text-emerald-400" />
-                <span className="text-emerald-400 font-bold">Copied to Clipboard!</span>
+                <Check className="w-3.5 h-3.5 text-emerald-600" />
+                <span className="text-emerald-700 font-bold">Copied to Clipboard!</span>
               </>
             ) : (
               <>
-                <Copy className="w-3.5 h-3.5 text-cyan-400" />
-                <span>Copy Text</span>
+                <Copy className="w-3.5 h-3.5 text-slate-500" />
+                <span>Copy Bulletin</span>
               </>
             )}
           </button>
@@ -82,20 +82,20 @@ EMERGENCY HELPLINES:
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Share emergency advisory bulletin to WhatsApp"
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-md shadow-emerald-600/20 transition-all active:scale-95"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-[#16a34a] hover:bg-[#15803d] text-white text-xs font-bold shadow-sm transition-colors"
           >
             <MessageSquare className="w-3.5 h-3.5" />
-            <span>Share to WhatsApp</span>
+            <span>Share via WhatsApp</span>
           </a>
         </div>
       </div>
 
       <div className="relative">
-        <div className="absolute top-2 right-2 text-[10px] font-mono text-slate-500 flex items-center gap-1">
-          <Terminal className="w-3 h-3 text-cyan-400" />
-          <span>BROADCAST_TELETYPE</span>
+        <div className="absolute top-2.5 right-3 text-[10px] font-mono text-slate-400 flex items-center gap-1.5 select-none">
+          <Terminal className="w-3 h-3 text-slate-400" />
+          <span>OFFICIAL_BULLETIN_DISPATCH</span>
         </div>
-        <pre className="bg-slate-950 rounded-xl p-4 border border-slate-800 font-mono text-xs text-slate-200 whitespace-pre-line leading-relaxed max-h-48 overflow-y-auto scrollbar-thin">
+        <pre className="bg-slate-50 rounded border border-slate-200 p-4 font-mono text-xs text-slate-800 whitespace-pre-line leading-relaxed max-h-48 overflow-y-auto">
           {advisoryText}
         </pre>
       </div>

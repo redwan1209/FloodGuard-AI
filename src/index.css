@@ -3,35 +3,37 @@
 @tailwind utilities;
 
 @layer base {
-  body {
-    @apply bg-slate-950 text-slate-100 font-sans antialiased;
+  html, body {
+    @apply bg-slate-100 text-slate-900 font-sans antialiased;
     scrollbar-width: thin;
-    scrollbar-color: #1e293b #090d16;
+    scrollbar-color: #cbd5e1 #f8fafc;
+    overflow-x: hidden;
+    max-width: 100vw;
   }
 }
 
-/* Custom scrollbar */
+/* Professional clean scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #090d16;
+  background: #f1f5f9;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
+  background: #cbd5e1;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: #94a3b8;
 }
 
-/* Custom range sliders styling */
+/* Professional range sliders styling (Light GIS Theme) */
 input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
   height: 6px;
-  background: #1e293b;
+  background: #cbd5e1;
   border-radius: 9999px;
   outline: none;
   transition: all 0.2s ease;
@@ -40,126 +42,108 @@ input[type="range"] {
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
   cursor: pointer;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  background: #1e40af;
+  border: 2px solid #ffffff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+  transition: transform 0.15s ease, background-color 0.15s ease;
 }
 
 input[type="range"]::-moz-range-thumb {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
   cursor: pointer;
-  border: none;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  background: #1e40af;
+  border: 2px solid #ffffff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+  transition: transform 0.15s ease, background-color 0.15s ease;
 }
 
 input[type="range"]::-webkit-slider-thumb:hover {
-  transform: scale(1.2);
+  transform: scale(1.15);
+  background: #1d4ed8;
 }
 
 input[type="range"]::-moz-range-thumb:hover {
-  transform: scale(1.2);
+  transform: scale(1.15);
+  background: #1d4ed8;
 }
 
-input[type="range"].accent-blue-500::-webkit-slider-thumb {
-  background: #3b82f6;
-  border: 2px solid #93c5fd;
-  box-shadow: 0 0 12px rgba(59, 130, 246, 0.5);
-}
-input[type="range"].accent-cyan-500::-webkit-slider-thumb {
-  background: #06b6d4;
-  border: 2px solid #a5f3fc;
-  box-shadow: 0 0 12px rgba(6, 182, 212, 0.5);
-}
-input[type="range"].accent-purple-500::-webkit-slider-thumb {
-  background: #a855f7;
-  border: 2px solid #e9d5ff;
-  box-shadow: 0 0 12px rgba(168, 85, 247, 0.5);
-}
-
-/* Leaflet map styles and z-index fixes */
+/* Leaflet map styles - Professional GIS Light Application */
 .leaflet-container {
   width: 100%;
   height: 100%;
-  background-color: #0b132b !important;
+  background-color: #f8fafc !important;
   font-family: inherit;
 }
 
 .leaflet-control-zoom {
-  border: 1px solid #334155 !important;
-  border-radius: 0.75rem !important;
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 6px !important;
   overflow: hidden;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4) !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12) !important;
 }
 
 .leaflet-control-zoom a {
-  background-color: rgba(15, 23, 42, 0.9) !important;
-  backdrop-filter: blur(8px);
-  color: #e2e8f0 !important;
-  border-color: #334155 !important;
-  transition: background-color 0.2s ease;
+  background-color: #ffffff !important;
+  color: #1e293b !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+  font-weight: 600;
+  transition: background-color 0.15s ease;
 }
 
 .leaflet-control-zoom a:hover {
-  background-color: #1e293b !important;
-  color: #38bdf8 !important;
+  background-color: #f1f5f9 !important;
+  color: #0f172a !important;
 }
 
-.leaflet-popup-content-wrapper, .leaflet-popup-tip {
-  background-color: rgba(15, 23, 42, 0.95) !important;
-  backdrop-filter: blur(12px);
-  color: #f8fafc !important;
-  border: 1px solid #334155;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 8px 10px -6px rgba(0, 0, 0, 0.6);
-  border-radius: 0.875rem;
+.leaflet-popup-content-wrapper {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border: 1px solid #cbd5e1;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 0;
+}
+
+.leaflet-popup-tip {
+  background-color: #ffffff !important;
+  border: 1px solid #cbd5e1;
 }
 
 .leaflet-popup-close-button {
-  color: #94a3b8 !important;
-  padding: 4px 6px 0 0 !important;
+  color: #64748b !important;
+  padding: 6px 8px 0 0 !important;
   font-size: 16px !important;
   transition: color 0.15s ease;
 }
 
 .leaflet-popup-close-button:hover {
-  color: #f8fafc !important;
+  color: #0f172a !important;
 }
 
-/* Pulse animation for hazard points */
-@keyframes pulse-ring {
+/* Subtle operational pulse animation for danger mark breach */
+@keyframes gis-danger-pulse {
   0% {
-    transform: scale(0.6);
-    opacity: 0.9;
+    box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.6);
   }
-  80%, 100% {
-    transform: scale(2.2);
-    opacity: 0;
+  70% {
+    box-shadow: 0 0 0 8px rgba(220, 38, 38, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(220, 38, 38, 0);
   }
 }
 
-.pulse-marker {
-  position: relative;
+.gis-station-danger {
+  animation: gis-danger-pulse 2s infinite;
 }
 
-.pulse-marker::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background: inherit;
-  animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
-  z-index: -1;
-}
-
-/* Print Stylesheet for Evacuation Pass */
+/* Print Stylesheet for Official Evacuation Pass */
 @media print {
   body {
     background: #ffffff !important;
@@ -173,7 +157,7 @@ input[type="range"].accent-purple-500::-webkit-slider-thumb {
     position: static !important;
     width: 100% !important;
     margin: 0 !important;
-    padding: 20px !important;
+    padding: 24px !important;
     background: #ffffff !important;
     color: #000000 !important;
     border: 2px solid #000000 !important;
@@ -181,7 +165,7 @@ input[type="range"].accent-purple-500::-webkit-slider-thumb {
   }
   .printable-pass-container * {
     color: #000000 !important;
-    border-color: #666666 !important;
+    border-color: #999999 !important;
     background-color: transparent !important;
   }
 }

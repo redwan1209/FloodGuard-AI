@@ -12,7 +12,8 @@ import {
   ArrowRight,
   Database,
   Cpu,
-  Flame
+  Flame,
+  Activity
 } from 'lucide-react';
 
 interface JudgeDemoGuideProps {
@@ -34,7 +35,7 @@ export const JudgeDemoGuide: React.FC<JudgeDemoGuideProps> = ({
 }) => {
   const [isExpanded, setIsExpanded] = useState(true);
 
-  // Scenario presets for quick judge testing
+  // Quick stress scenario preset
   const triggerCatastrophicDeluge = () => {
     onApplyScenario({
       rainfallMultiplier: 2.2,
@@ -47,172 +48,160 @@ export const JudgeDemoGuide: React.FC<JudgeDemoGuideProps> = ({
 
   return (
     <section
-      aria-label="Judge Guided Evaluation Tour"
-      className="bg-gradient-to-r from-slate-900 via-indigo-950/40 to-slate-900 border border-indigo-500/30 rounded-2xl p-4 sm:p-5 shadow-2xl relative overflow-hidden transition-all"
+      aria-label="Operational Verification Protocol"
+      className="bg-white border border-slate-200 rounded-lg shadow-xs overflow-hidden transition-all"
     >
-      {/* Background Accent Glow */}
-      <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
-
-      {/* Header Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-cyan-500 text-white flex items-center justify-center shadow-lg shadow-indigo-500/25 shrink-0">
-            <Zap className="w-5 h-5 text-amber-200 fill-amber-200" />
+      {/* Sleek Operational Header Bar */}
+      <div className="px-3 py-2 sm:px-4 sm:py-2.5 bg-slate-50 flex items-center justify-between gap-2 text-xs">
+        <div className="flex items-center gap-2 min-w-0">
+          <div className="flex items-center gap-1.5 font-bold text-slate-800 min-w-0">
+            <Activity className="w-3.5 h-3.5 text-blue-700 shrink-0" />
+            <span className="text-xs sm:text-sm tracking-tight truncate">
+              <span className="sm:hidden">Operational Protocol</span>
+              <span className="hidden sm:inline">Operational Verification Protocol</span>
+            </span>
           </div>
-          <div>
-            <div className="flex flex-wrap items-center gap-2">
-              <h3 className="text-sm sm:text-base font-bold text-white tracking-tight">
-                2-Minute Hackathon Evaluation Tour
-              </h3>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
-                End-to-End Decision Support
-              </span>
-              {isSimulated && (
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-500/20 text-red-300 border border-red-500/40 flex items-center gap-1 animate-pulse">
-                  <Flame className="w-2.5 h-2.5 fill-red-400" />
-                  <span>Stress Test Active</span>
-                </span>
-              )}
-            </div>
-            <p className="text-xs text-slate-400 mt-0.5">
-              Verify workflow: <span className="text-slate-300 font-medium">Data Telemetry</span> → <span className="text-slate-300 font-medium">MCDA AI Model</span> → <span className="text-slate-300 font-medium">Scenario Stress</span> → <span className="text-slate-300 font-medium">Hazard Map</span> → <span className="text-slate-300 font-medium">Evacuation Triage</span>
-            </p>
-          </div>
+          <span className="hidden md:inline-flex text-[10px] font-semibold px-2 py-0.5 rounded bg-blue-100 text-blue-800 border border-blue-200 shrink-0">
+            2-Min Audit Tour
+          </span>
+          {isSimulated && (
+            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-red-100 text-red-800 border border-red-300 flex items-center gap-1 animate-pulse shrink-0">
+              <Flame className="w-2.5 h-2.5 fill-red-600 text-red-600" />
+              <span>Stress Active</span>
+            </span>
+          )}
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 shrink-0">
           {isSimulated && (
             <button
               onClick={onResetScenario}
-              className="flex items-center gap-1 text-xs font-bold px-2.5 py-1.5 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 transition-all shadow-sm active:scale-95"
+              className="flex items-center gap-1 text-[11px] font-bold px-2 py-1 rounded bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300 transition-colors shadow-xs"
               title="Reset simulation parameters to live baseline"
             >
-              <RotateCcw className="w-3.5 h-3.5" />
-              <span>Reset to Baseline</span>
+              <RotateCcw className="w-3 h-3" />
+              <span className="hidden sm:inline">Reset Baseline</span>
             </button>
           )}
 
           <button
             onClick={() => setIsExpanded(!isExpanded)}
-            className="flex items-center gap-1 text-xs font-semibold px-2.5 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition-colors"
+            className="flex items-center gap-1 text-[11px] font-semibold px-2 py-1 rounded bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 transition-colors shadow-xs"
           >
-            <span>{isExpanded ? 'Minimize Tour' : 'Open 2-Min Tour'}</span>
-            {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+            <span>{isExpanded ? 'Minimize' : 'Tour'}</span>
+            {isExpanded ? <ChevronUp className="w-3 h-3 text-slate-500" /> : <ChevronDown className="w-3 h-3 text-slate-500" />}
           </button>
         </div>
       </div>
 
-      {/* Collapsible Steps Content */}
+      {/* Compact Operational Steps (Reduced Vertical Footprint) */}
       {isExpanded && (
-        <div className="mt-4 pt-4 border-t border-slate-800/80 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 animate-in fade-in duration-200">
+        <div className="p-2.5 sm:p-3 border-t border-slate-200 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 animate-in fade-in duration-150">
           {/* Step 1: Telemetry Data */}
-          <div className="bg-slate-900/90 rounded-xl p-3.5 border border-slate-800 flex flex-col justify-between hover:border-slate-700 transition-all">
+          <div className="bg-slate-50 rounded p-2.5 border border-slate-200 flex flex-col justify-between hover:border-slate-300 transition-all">
             <div>
-              <div className="flex items-center justify-between text-[11px] font-bold text-cyan-400 uppercase tracking-wider mb-1">
-                <span className="flex items-center gap-1.5">
-                  <Database className="w-3.5 h-3.5 text-cyan-400" /> Step 1: Multi-Source Data
+              <div className="flex items-center justify-between text-[10px] font-bold text-blue-800 uppercase tracking-wide">
+                <span className="flex items-center gap-1">
+                  <Database className="w-3 h-3 text-blue-600" />
+                  <span>01 • Telemetry</span>
                 </span>
-                <span className="text-slate-500 font-mono font-bold">01</span>
+                <span className="text-slate-400 font-mono">LIVE</span>
               </div>
-              <p className="text-xs text-slate-200 font-bold mt-1">
-                Live APIs + Public Benchmarks
-              </p>
-              <p className="text-[11px] text-slate-400 mt-1 leading-relaxed">
-                Open-Meteo real-time rain + CWC gauge benchmarks + Copernicus/SRTM 30m DEM elevation data.
+              <p className="text-xs font-bold text-slate-900 mt-1">Multi-Source Feeds</p>
+              <p className="text-[11px] text-slate-600 mt-0.5 leading-tight">
+                CWC river benchmarks + Open-Meteo precipitation + SRTM 30m DEM terrain.
               </p>
             </div>
             <button
               onClick={() => onNavigateTab('analytics')}
-              className="mt-3 w-full py-1.5 px-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white text-xs font-semibold flex items-center justify-center gap-1 transition-all"
+              className="mt-2 w-full py-1 px-2 rounded bg-white hover:bg-slate-100 text-slate-800 text-[11px] font-semibold border border-slate-200 flex items-center justify-center gap-1 transition-colors shadow-xs"
             >
-              <span>Inspect Hydrographs</span>
-              <ArrowRight className="w-3 h-3 text-cyan-400" />
+              <span>Inspect Telemetry</span>
+              <ArrowRight className="w-2.5 h-2.5 text-blue-600" />
             </button>
           </div>
 
-          {/* Step 2: Explainable MCDA Model */}
-          <div className="bg-slate-900/90 rounded-xl p-3.5 border border-slate-800 flex flex-col justify-between hover:border-slate-700 transition-all">
+          {/* Step 2: 4-Pillar MCDA */}
+          <div className="bg-slate-50 rounded p-2.5 border border-slate-200 flex flex-col justify-between hover:border-slate-300 transition-all">
             <div>
-              <div className="flex items-center justify-between text-[11px] font-bold text-indigo-400 uppercase tracking-wider mb-1">
-                <span className="flex items-center gap-1.5">
-                  <Cpu className="w-3.5 h-3.5 text-indigo-400" /> Step 2: 4-Pillar MCDA AI
+              <div className="flex items-center justify-between text-[10px] font-bold text-indigo-800 uppercase tracking-wide">
+                <span className="flex items-center gap-1">
+                  <Cpu className="w-3 h-3 text-indigo-600" />
+                  <span>02 • MCDA Model</span>
                 </span>
-                <span className="text-slate-500 font-mono font-bold">02</span>
+                <span className="text-slate-400 font-mono">100%</span>
               </div>
-              <p className="text-xs text-slate-200 font-bold mt-1">
-                Rigorous 100% Equal Formula
-              </p>
-              <p className="text-[11px] text-slate-400 mt-1 leading-relaxed">
-                35% Hydro + 30% Rain + 20% Topo + 15% History = Current Score <strong className="text-white font-mono">{assessment.overallScore}/100</strong>.
+              <p className="text-xs font-bold text-slate-900 mt-1">Weighted Assessment</p>
+              <p className="text-[11px] text-slate-600 mt-0.5 leading-tight">
+                35% River + 30% Rain + 20% Topo + 15% History.
               </p>
             </div>
-            <div className="mt-3 text-[11px] text-slate-400 italic bg-slate-950/70 p-1.5 rounded border border-slate-800/80 truncate">
-              "{assessment.primaryDriver}"
+            <div className="mt-2 py-0.5 px-2 rounded bg-white border border-slate-200 text-[11px] text-slate-800 flex items-center justify-between font-mono">
+              <span className="text-slate-500 font-sans">Current FRI:</span>
+              <span className="font-bold text-slate-900">{assessment.overallScore}/100</span>
             </div>
           </div>
 
-          {/* Step 3: Trigger "What-If" Stress */}
-          <div className="bg-slate-900/90 rounded-xl p-3.5 border border-amber-500/30 flex flex-col justify-between hover:border-amber-500/50 transition-all">
+          {/* Step 3: What-If Stress */}
+          <div className="bg-slate-50 rounded p-2.5 border border-amber-200 flex flex-col justify-between hover:border-amber-300 transition-all">
             <div>
-              <div className="flex items-center justify-between text-[11px] font-bold text-amber-400 uppercase tracking-wider mb-1">
-                <span className="flex items-center gap-1.5">
-                  <Sliders className="w-3.5 h-3.5 text-amber-400" /> Step 3: "What-If" Stress
+              <div className="flex items-center justify-between text-[10px] font-bold text-amber-900 uppercase tracking-wide">
+                <span className="flex items-center gap-1">
+                  <Sliders className="w-3 h-3 text-amber-700" />
+                  <span>03 • Stress Test</span>
                 </span>
-                <span className="text-slate-500 font-mono font-bold">03</span>
+                <span className="text-amber-600 font-mono">SIM</span>
               </div>
-              <p className="text-xs text-slate-200 font-bold mt-1">
-                Simulate Cloudburst Surge
-              </p>
-              <p className="text-[11px] text-slate-400 mt-1 leading-relaxed">
-                Apply +140mm rainfall & +2.4m river rise to observe instant score surge to RED ALERT.
+              <p className="text-xs font-bold text-slate-900 mt-1">Cloudburst Surge</p>
+              <p className="text-[11px] text-slate-600 mt-0.5 leading-tight">
+                Inject +140mm rainfall & +2.4m dam breach to simulate catastrophic surge.
               </p>
             </div>
-            <div className="mt-3 flex gap-1.5">
+            <div className="mt-2 flex gap-1.5">
               <button
                 onClick={triggerCatastrophicDeluge}
-                className="flex-1 py-1.5 px-2 rounded-lg bg-red-600 hover:bg-red-500 text-white text-xs font-bold shadow-md shadow-red-600/20 transition-all text-center active:scale-95"
+                className="flex-1 py-1 px-2 rounded bg-red-600 hover:bg-red-700 text-white text-[11px] font-bold transition-colors shadow-xs"
               >
                 ⚡ Trigger Deluge
               </button>
               <button
                 onClick={() => onNavigateTab('simulator')}
-                className="py-1.5 px-2.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs transition-colors"
+                className="py-1 px-2 rounded bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 text-[11px] transition-colors shadow-xs"
                 title="Open Scenario Simulator"
               >
-                <Sliders className="w-3.5 h-3.5" />
+                <Sliders className="w-3 h-3" />
               </button>
             </div>
           </div>
 
-          {/* Step 4: Map & Evacuation Directives */}
-          <div className="bg-slate-900/90 rounded-xl p-3.5 border border-emerald-500/30 flex flex-col justify-between hover:border-emerald-500/50 transition-all">
+          {/* Step 4: Spatial & Evacuation Triage */}
+          <div className="bg-slate-50 rounded p-2.5 border border-emerald-200 flex flex-col justify-between hover:border-emerald-300 transition-all">
             <div>
-              <div className="flex items-center justify-between text-[11px] font-bold text-emerald-400 uppercase tracking-wider mb-1">
-                <span className="flex items-center gap-1.5">
-                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> Step 4: Map & Shelters
+              <div className="flex items-center justify-between text-[10px] font-bold text-emerald-800 uppercase tracking-wide">
+                <span className="flex items-center gap-1">
+                  <ShieldCheck className="w-3 h-3 text-emerald-700" />
+                  <span>04 • Spatial Action</span>
                 </span>
-                <span className="text-slate-500 font-mono font-bold">04</span>
+                <span className="text-emerald-600 font-mono">GIS</span>
               </div>
-              <p className="text-xs text-slate-200 font-bold mt-1">
-                Dynamic Corridors & Shelters
-              </p>
-              <p className="text-[11px] text-slate-400 mt-1 leading-relaxed">
-                Inundation footprint (~{assessment.inundationAreaSqKm} km²), safe high grounds, and clear vs flooded roads.
+              <p className="text-xs font-bold text-slate-900 mt-1">Hazard & Shelters</p>
+              <p className="text-[11px] text-slate-600 mt-0.5 leading-tight">
+                Inundation footprint (~{assessment.inundationAreaSqKm} km²) & safe corridors.
               </p>
             </div>
-            <div className="mt-3 flex gap-1.5">
+            <div className="mt-2 flex gap-1.5">
               <button
                 onClick={() => onNavigateTab('map')}
-                className="flex-1 py-1.5 px-2 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold transition-all flex items-center justify-center gap-1 active:scale-95"
+                className="flex-1 py-1 px-2 rounded bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-bold transition-colors flex items-center justify-center gap-1 shadow-xs"
               >
-                <Map className="w-3 h-3" />
+                <Map className="w-2.5 h-2.5" />
                 <span>Map</span>
               </button>
               <button
                 onClick={() => onNavigateTab('evacuation')}
-                className="flex-1 py-1.5 px-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-all flex items-center justify-center gap-1 active:scale-95"
+                className="flex-1 py-1 px-2 rounded bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-bold transition-colors flex items-center justify-center gap-1 shadow-xs"
               >
-                <ShieldCheck className="w-3 h-3" />
+                <ShieldCheck className="w-2.5 h-2.5" />
                 <span>Shelters</span>
               </button>
             </div>
