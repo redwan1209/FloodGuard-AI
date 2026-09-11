@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FloodRiskAssessment, FloodBasin, RiverGauge } from '../../types';
-import { Radio, Copy, Check, MessageSquare, Share2 } from 'lucide-react';
+import { Radio, Copy, Check, MessageSquare, Share2, Terminal } from 'lucide-react';
 
 interface AlertBroadcastProps {
   assessment: FloodRiskAssessment;
@@ -43,18 +43,18 @@ EMERGENCY HELPLINES:
   };
 
   return (
-    <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 shadow-lg">
+    <section aria-label="Public Advisory and Emergency Broadcast" className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 sm:p-6 shadow-xl">
       <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-red-500/15 text-red-400 flex items-center justify-center">
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 rounded-lg bg-red-500/15 text-red-400 flex items-center justify-center shadow-inner">
             <Radio className="w-4 h-4 animate-pulse" />
           </div>
           <div>
-            <h3 className="text-sm font-bold text-white">
+            <h3 className="text-sm sm:text-base font-bold text-white">
               Public Advisory & Emergency Broadcast Dispatcher
             </h3>
             <p className="text-xs text-slate-400">
-              Auto-generated structured bulletin ready for WhatsApp, SMS & public address systems
+              Auto-generated structured bulletin ready for WhatsApp, SMS & public address announcements
             </p>
           </div>
         </div>
@@ -62,12 +62,13 @@ EMERGENCY HELPLINES:
         <div className="flex items-center gap-2">
           <button
             onClick={handleCopy}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 transition-colors"
+            aria-label="Copy bulletin text to clipboard"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white text-xs font-semibold border border-slate-700 transition-all active:scale-95"
           >
             {copied ? (
               <>
                 <Check className="w-3.5 h-3.5 text-emerald-400" />
-                <span className="text-emerald-400">Copied to Clipboard!</span>
+                <span className="text-emerald-400 font-bold">Copied to Clipboard!</span>
               </>
             ) : (
               <>
@@ -80,7 +81,8 @@ EMERGENCY HELPLINES:
             href={`https://wa.me/?text=${encodeURIComponent(advisoryText)}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold shadow-md shadow-emerald-600/20 transition-all"
+            aria-label="Share emergency advisory bulletin to WhatsApp"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-md shadow-emerald-600/20 transition-all active:scale-95"
           >
             <MessageSquare className="w-3.5 h-3.5" />
             <span>Share to WhatsApp</span>
@@ -88,9 +90,15 @@ EMERGENCY HELPLINES:
         </div>
       </div>
 
-      <div className="bg-slate-950 rounded-xl p-4 border border-slate-800/80 font-mono text-xs text-slate-300 whitespace-pre-line leading-relaxed max-h-48 overflow-y-auto">
-        {advisoryText}
+      <div className="relative">
+        <div className="absolute top-2 right-2 text-[10px] font-mono text-slate-500 flex items-center gap-1">
+          <Terminal className="w-3 h-3 text-cyan-400" />
+          <span>BROADCAST_TELETYPE</span>
+        </div>
+        <pre className="bg-slate-950 rounded-xl p-4 border border-slate-800 font-mono text-xs text-slate-200 whitespace-pre-line leading-relaxed max-h-48 overflow-y-auto scrollbar-thin">
+          {advisoryText}
+        </pre>
       </div>
-    </div>
+    </section>
   );
 };

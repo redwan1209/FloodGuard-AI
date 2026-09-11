@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import { FloodBasin, RiverGauge, Shelter, FloodRiskAssessment } from '../../types';
-import { Layers, Eye, Shield, Waves, Navigation, MapPin, Route, ShieldCheck } from 'lucide-react';
+import { Layers, Eye, Shield, Waves, Navigation, MapPin, Route, ShieldCheck, ChevronDown, ChevronUp } from 'lucide-react';
 
 interface FloodMapProps {
   basin: FloodBasin;
@@ -28,6 +28,7 @@ export const FloodMap: React.FC<FloodMapProps> = ({
   const [showShelters, setShowShelters] = useState(true);
   const [showCorridors, setShowCorridors] = useState(true);
   const [selectedStation, setSelectedStation] = useState<RiverGauge | null>(null);
+  const [isLayersCollapsed, setIsLayersCollapsed] = useState(false);
 
   // Initialize Map
   useEffect(() => {
@@ -41,7 +42,7 @@ export const FloodMap: React.FC<FloodMapProps> = ({
         attributionControl: false
       });
 
-      // CartoDB Dark Matter / Dark All tiles for disaster command center look
+      // CartoDB Voyager raster tiles
       L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
         maxZoom: 19,
         subdomains: 'abcd',
@@ -139,7 +140,7 @@ export const FloodMap: React.FC<FloodMapProps> = ({
         const markerColor = isDanger ? '#EF4444' : isWarning ? '#F59E0B' : '#10B981';
 
         const customIcon = L.divIcon({
-          className: 'custom-gauge-marker',
+          className: `custom-gauge-marker ${isDanger ? 'pulse-marker' : ''}`,
           html: `
             <div style="
               width: 28px;
@@ -147,13 +148,14 @@ export const FloodMap: React.FC<FloodMapProps> = ({
               background-color: ${markerColor};
               border: 3px solid #ffffff;
               border-radius: 50%;
-              box-shadow: 0 0 12px ${markerColor};
+              box-shadow: 0 0 14px ${markerColor};
               display: flex;
               align-items: center;
               justify-content: center;
               color: white;
-              font-size: 12px;
-              font-weight: bold;
+              font-size: 13px;
+              font-weight: 800;
+              line-height: 1;
             ">
               ~
             </div>
@@ -164,29 +166,29 @@ export const FloodMap: React.FC<FloodMapProps> = ({
 
         const marker = L.marker(g.coordinates, { icon: customIcon });
         marker.bindPopup(`
-          <div class="p-1 text-slate-100">
-            <div class="text-[10px] font-semibold text-cyan-400 uppercase tracking-wider">CWC Hydrological Station</div>
-            <h4 class="font-bold text-sm text-white mt-0.5">${g.stationName}</h4>
-            <div class="mt-2 text-xs space-y-1">
-              <div class="flex justify-between">
-                <span class="text-slate-400">Current Level:</span>
-                <strong class="text-white">${g.currentLevelM} m</strong>
+          <div style="min-width: 210px; padding: 4px; color: #f8fafc; font-family: sans-serif;">
+            <div style="font-size: 10px; font-weight: 700; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.05em;">CWC Hydrological Station</div>
+            <h4 style="font-size: 14px; font-weight: 700; color: #ffffff; margin: 2px 0 8px 0;">${g.stationName}</h4>
+            <div style="font-size: 12px; display: flex; flex-direction: column; gap: 4px;">
+              <div style="display: flex; justify-content: space-between;">
+                <span style="color: #94a3b8;">Current Level:</span>
+                <strong style="color: #ffffff; font-family: monospace;">${g.currentLevelM} m</strong>
               </div>
-              <div class="flex justify-between">
-                <span class="text-slate-400">Warning Level:</span>
-                <span class="text-amber-400">${g.warningLevelM} m</span>
+              <div style="display: flex; justify-content: space-between;">
+                <span style="color: #94a3b8;">Warning Mark:</span>
+                <span style="color: #fbbf24; font-family: monospace;">${g.warningLevelM} m</span>
               </div>
-              <div class="flex justify-between">
-                <span class="text-slate-400">Danger Level:</span>
-                <span class="text-red-400">${g.dangerLevelM} m</span>
+              <div style="display: flex; justify-content: space-between;">
+                <span style="color: #94a3b8;">Danger Mark:</span>
+                <span style="color: #f87171; font-family: monospace; font-weight: 700;">${g.dangerLevelM} m</span>
               </div>
-              <div class="flex justify-between">
-                <span class="text-slate-400">Flow Discharge:</span>
-                <span class="text-slate-200">${g.flowDischargeCusecs.toLocaleString()} cusecs</span>
+              <div style="display: flex; justify-content: space-between;">
+                <span style="color: #94a3b8;">Flow Discharge:</span>
+                <span style="color: #cbd5e1;">${g.flowDischargeCusecs.toLocaleString()} cusecs</span>
               </div>
-              <div class="flex justify-between pt-1 border-t border-slate-700">
-                <span class="text-slate-400">Trend:</span>
-                <span class="font-semibold text-cyan-300 capitalize">${g.trend}</span>
+              <div style="display: flex; justify-content: space-between; padding-top: 4px; border-top: 1px solid #334155;">
+                <span style="color: #94a3b8;">Trend:</span>
+                <span style="color: #67e8f9; font-weight: 600; text-transform: capitalize;">${g.trend}</span>
               </div>
             </div>
           </div>
@@ -209,13 +211,13 @@ export const FloodMap: React.FC<FloodMapProps> = ({
               background-color: #0284c7;
               border: 2px solid #38bdf8;
               border-radius: 8px;
-              box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+              box-shadow: 0 4px 10px rgba(0,0,0,0.5);
               display: flex;
               align-items: center;
               justify-content: center;
               color: white;
               font-size: 11px;
-              font-weight: bold;
+              font-weight: 800;
             ">
               H
             </div>
@@ -226,37 +228,38 @@ export const FloodMap: React.FC<FloodMapProps> = ({
 
         const marker = L.marker(s.coordinates, { icon: shelterIcon });
         marker.bindPopup(`
-          <div class="p-1 text-slate-100">
-            <div class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider">High-Ground Safe Shelter</div>
-            <h4 class="font-bold text-sm text-white mt-0.5">${s.name}</h4>
-            <div class="mt-2 text-xs space-y-1">
-              <div class="flex justify-between">
-                <span class="text-slate-400">Elevation:</span>
-                <strong class="text-emerald-400">${s.elevationM} m MSL (+${s.safetyMarginAboveFloodM}m buffer)</strong>
+          <div style="min-width: 220px; padding: 4px; color: #f8fafc; font-family: sans-serif;">
+            <div style="font-size: 10px; font-weight: 700; color: #34d399; text-transform: uppercase; letter-spacing: 0.05em;">High-Ground Safe Shelter</div>
+            <h4 style="font-size: 14px; font-weight: 700; color: #ffffff; margin: 2px 0 8px 0;">${s.name}</h4>
+            <div style="font-size: 12px; display: flex; flex-direction: column; gap: 4px;">
+              <div style="display: flex; justify-content: space-between;">
+                <span style="color: #94a3b8;">Elevation:</span>
+                <strong style="color: #34d399;">${s.elevationM}m MSL (+${s.safetyMarginAboveFloodM}m buffer)</strong>
               </div>
-              <div class="flex justify-between">
-                <span class="text-slate-400">Capacity:</span>
-                <span class="text-slate-200">${s.currentOccupancy} / ${s.totalCapacity} (${Math.round((s.currentOccupancy/s.totalCapacity)*100)}%)</span>
+              <div style="display: flex; justify-content: space-between;">
+                <span style="color: #94a3b8;">Capacity:</span>
+                <span style="color: #cbd5e1;">${s.currentOccupancy} / ${s.totalCapacity} (${Math.round((s.currentOccupancy/s.totalCapacity)*100)}%)</span>
               </div>
-              <div class="flex justify-between">
-                <span class="text-slate-400">Road Status:</span>
-                <span class="font-semibold ${s.roadAccessibility === 'CLEAR' ? 'text-emerald-400' : 'text-amber-400'}">${s.roadAccessibility}</span>
+              <div style="display: flex; justify-content: space-between;">
+                <span style="color: #94a3b8;">Road Status:</span>
+                <span style="font-weight: 600; color: ${s.roadAccessibility === 'CLEAR' ? '#34d399' : '#fbbf24'};">${s.roadAccessibility}</span>
               </div>
-              <div class="flex justify-between">
-                <span class="text-slate-400">Contact:</span>
-                <span class="text-cyan-300 font-mono">${s.contactPhone}</span>
+              <div style="display: flex; justify-content: space-between;">
+                <span style="color: #94a3b8;">Contact:</span>
+                <span style="color: #67e8f9; font-family: monospace;">${s.contactPhone}</span>
               </div>
             </div>
-            <div class="mt-2.5 pt-2 border-t border-slate-700 text-right">
+            <div style="margin-top: 10px; padding-top: 8px; border-top: 1px solid #334155; text-align: right;">
               <button id="shelter-nav-btn-${s.id}" style="
                 background-color: #0284c7;
                 color: #ffffff;
-                font-size: 10px;
-                font-weight: bold;
-                padding: 4px 8px;
+                font-size: 11px;
+                font-weight: 700;
+                padding: 5px 10px;
                 border-radius: 6px;
                 border: none;
                 cursor: pointer;
+                transition: background-color 0.15s;
               ">
                 View in Evacuation Center →
               </button>
@@ -277,7 +280,7 @@ export const FloodMap: React.FC<FloodMapProps> = ({
       });
     }
 
-    // 4. Evacuation Corridors, Safe Havens & Low Alluvial Floodplain (Phase 1)
+    // 4. Evacuation Corridors, Safe Havens & Low Alluvial Floodplain
     if (showCorridors) {
       // 4a. Low-Elevation Alluvial Plain Buffer (SRTM 30m DEM)
       const plainCircle = L.circle(basin.coordinates, {
@@ -340,92 +343,103 @@ export const FloodMap: React.FC<FloodMapProps> = ({
   }, [basin, gauges, shelters, assessment, showInundation, showGauges, showShelters, showCorridors]);
 
   return (
-    <div className="relative w-full h-[600px] rounded-2xl overflow-hidden border border-slate-800 shadow-2xl bg-slate-950">
+    <div className="relative w-full h-[540px] sm:h-[620px] rounded-2xl overflow-hidden border border-slate-800 shadow-2xl bg-slate-950">
       {/* Map Container */}
       <div ref={mapContainerRef} className="w-full h-full z-0" />
 
-      {/* Floating Layer Controls */}
-      <div className="absolute top-4 left-4 z-10 bg-slate-900/90 backdrop-blur-md p-3 rounded-xl border border-slate-800 shadow-xl max-w-xs">
-        <div className="flex items-center gap-2 pb-2 mb-2 border-b border-slate-800 text-xs font-bold text-slate-200 uppercase tracking-wider">
-          <Layers className="w-3.5 h-3.5 text-cyan-400" />
-          <span>Interactive Map Layers</span>
+      {/* Floating Layer Controls (Collapsible for clean mobile experience) */}
+      <div className="absolute top-3 left-3 sm:top-4 sm:left-4 z-10 bg-slate-900/95 backdrop-blur-md p-2.5 sm:p-3 rounded-xl border border-slate-800 shadow-2xl max-w-[280px] sm:max-w-xs transition-all">
+        <div className="flex items-center justify-between gap-2 pb-1.5 border-b border-slate-800 text-xs font-bold text-slate-200">
+          <div className="flex items-center gap-1.5 uppercase tracking-wider">
+            <Layers className="w-3.5 h-3.5 text-cyan-400" />
+            <span>Map Layers</span>
+          </div>
+          <button
+            onClick={() => setIsLayersCollapsed(!isLayersCollapsed)}
+            className="p-0.5 rounded text-slate-400 hover:text-white"
+            title={isLayersCollapsed ? 'Expand Layer Controls' : 'Collapse Layer Controls'}
+          >
+            {isLayersCollapsed ? <ChevronDown className="w-4 h-4" /> : <ChevronUp className="w-4 h-4" />}
+          </button>
         </div>
 
-        <div className="space-y-2 text-xs">
-          <label className="flex items-center justify-between gap-3 cursor-pointer hover:text-white">
-            <span className="flex items-center gap-2">
-              <span className="w-3 h-3 rounded-full" style={{ backgroundColor: assessment.colorCode }} />
-              <span>Flood Inundation (Calculated MCDA)</span>
-            </span>
-            <input
-              type="checkbox"
-              checked={showInundation}
-              onChange={(e) => setShowInundation(e.target.checked)}
-              className="rounded bg-slate-800 border-slate-700 text-cyan-500 focus:ring-0 cursor-pointer"
-            />
-          </label>
+        {!isLayersCollapsed && (
+          <div className="mt-2 space-y-2 text-xs">
+            <label className="flex items-center justify-between gap-2 cursor-pointer hover:text-white select-none">
+              <span className="flex items-center gap-2">
+                <span className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: assessment.colorCode }} />
+                <span>Flood Inundation (MCDA)</span>
+              </span>
+              <input
+                type="checkbox"
+                checked={showInundation}
+                onChange={(e) => setShowInundation(e.target.checked)}
+                className="rounded bg-slate-800 border-slate-700 text-cyan-500 focus:ring-0 cursor-pointer"
+              />
+            </label>
 
-          <label className="flex items-center justify-between gap-3 cursor-pointer hover:text-white">
-            <span className="flex items-center gap-2">
-              <span className="w-3 h-3 rounded-full bg-red-500 border border-white" />
-              <span>River Gauges (Demo: CWC Telemetry)</span>
-            </span>
-            <input
-              type="checkbox"
-              checked={showGauges}
-              onChange={(e) => setShowGauges(e.target.checked)}
-              className="rounded bg-slate-800 border-slate-700 text-cyan-500 focus:ring-0 cursor-pointer"
-            />
-          </label>
+            <label className="flex items-center justify-between gap-2 cursor-pointer hover:text-white select-none">
+              <span className="flex items-center gap-2">
+                <span className="w-3 h-3 rounded-full bg-red-500 border border-white shrink-0" />
+                <span>CWC River Gauges</span>
+              </span>
+              <input
+                type="checkbox"
+                checked={showGauges}
+                onChange={(e) => setShowGauges(e.target.checked)}
+                className="rounded bg-slate-800 border-slate-700 text-cyan-500 focus:ring-0 cursor-pointer"
+              />
+            </label>
 
-          <label className="flex items-center justify-between gap-3 cursor-pointer hover:text-white">
-            <span className="flex items-center gap-2">
-              <span className="w-3 h-3 rounded bg-sky-500 text-[9px] text-white flex items-center justify-center font-bold">H</span>
-              <span>Safe Shelters (Designated Camps)</span>
-            </span>
-            <input
-              type="checkbox"
-              checked={showShelters}
-              onChange={(e) => setShowShelters(e.target.checked)}
-              className="rounded bg-slate-800 border-slate-700 text-cyan-500 focus:ring-0 cursor-pointer"
-            />
-          </label>
+            <label className="flex items-center justify-between gap-2 cursor-pointer hover:text-white select-none">
+              <span className="flex items-center gap-2">
+                <span className="w-3 h-3 rounded bg-sky-500 text-[9px] text-white flex items-center justify-center font-bold shrink-0">H</span>
+                <span>Safe High-Ground Shelters</span>
+              </span>
+              <input
+                type="checkbox"
+                checked={showShelters}
+                onChange={(e) => setShowShelters(e.target.checked)}
+                className="rounded bg-slate-800 border-slate-700 text-cyan-500 focus:ring-0 cursor-pointer"
+              />
+            </label>
 
-          <label className="flex items-center justify-between gap-3 cursor-pointer hover:text-white">
-            <span className="flex items-center gap-2">
-              <span className="w-3 h-1.5 border-b-2 border-emerald-400 border-dashed" />
-              <span>Evacuation Corridors & Safe Havens</span>
-            </span>
-            <input
-              type="checkbox"
-              checked={showCorridors}
-              onChange={(e) => setShowCorridors(e.target.checked)}
-              className="rounded bg-slate-800 border-slate-700 text-cyan-500 focus:ring-0 cursor-pointer"
-            />
-          </label>
-        </div>
+            <label className="flex items-center justify-between gap-2 cursor-pointer hover:text-white select-none">
+              <span className="flex items-center gap-2">
+                <span className="w-3 h-1 border-b-2 border-emerald-400 border-dashed shrink-0" />
+                <span>Evacuation Corridors</span>
+              </span>
+              <input
+                type="checkbox"
+                checked={showCorridors}
+                onChange={(e) => setShowCorridors(e.target.checked)}
+                className="rounded bg-slate-800 border-slate-700 text-cyan-500 focus:ring-0 cursor-pointer"
+              />
+            </label>
+          </div>
+        )}
       </div>
 
       {/* Floating Legend / Quick Summary */}
-      <div className="absolute bottom-4 left-4 z-10 bg-slate-900/90 backdrop-blur-md px-3.5 py-2.5 rounded-xl border border-slate-800 shadow-xl flex items-center gap-4 text-xs">
-        <div className="flex items-center gap-2">
+      <div className="absolute bottom-3 left-3 sm:bottom-4 sm:left-4 z-10 bg-slate-900/95 backdrop-blur-md px-3 py-2 rounded-xl border border-slate-800 shadow-2xl flex flex-wrap items-center gap-2.5 sm:gap-3 text-xs">
+        <div className="flex items-center gap-1.5">
           <MapPin className="w-3.5 h-3.5 text-cyan-400" />
-          <span className="font-semibold text-white">{basin.name}</span>
+          <span className="font-bold text-white">{basin.name}</span>
         </div>
-        <div className="h-4 w-px bg-slate-700" />
-        <div className="flex items-center gap-2">
-          <span className="text-slate-400">Elevation:</span>
+        <div className="h-3.5 w-px bg-slate-700" />
+        <div className="flex items-center gap-1.5">
+          <span className="text-slate-400">Elev:</span>
           <span className="font-semibold text-slate-200">{basin.averageElevationM}m MSL</span>
         </div>
-        <div className="h-4 w-px bg-slate-700 hidden sm:block" />
-        <div className="hidden sm:flex items-center gap-2">
+        <div className="h-3.5 w-px bg-slate-700 hidden sm:block" />
+        <div className="hidden sm:flex items-center gap-1.5">
           <span className="text-slate-400">Slope:</span>
           <span className="font-semibold text-slate-200">{basin.slopeGradientPercent}%</span>
         </div>
-        <div className="h-4 w-px bg-slate-700 hidden md:block" />
-        <div className="hidden md:flex items-center gap-1.5 text-[10px] text-slate-400">
+        <div className="h-3.5 w-px bg-slate-700 hidden md:block" />
+        <div className="hidden md:flex items-center gap-1 text-[10px] text-slate-400">
           <span className="px-1.5 py-0.5 rounded bg-slate-800 text-cyan-300 font-mono">DEM: SRTM 30m</span>
-          <span>• Simulated GIS Model</span>
+          <span>• Simulated GIS</span>
         </div>
       </div>
 
@@ -436,10 +450,11 @@ export const FloodMap: React.FC<FloodMapProps> = ({
             mapInstanceRef.current.flyTo(basin.coordinates, basin.zoom, { duration: 0.8 });
           }
         }}
-        className="absolute bottom-4 right-4 z-10 bg-slate-900/90 hover:bg-slate-800 text-slate-200 hover:text-white px-3 py-2 rounded-xl border border-slate-800 shadow-xl text-xs font-semibold flex items-center gap-1.5 transition-colors"
+        aria-label="Recenter Basin on Map"
+        className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 z-10 bg-slate-900/95 hover:bg-slate-800 text-slate-200 hover:text-white px-3 py-2 rounded-xl border border-slate-800 shadow-2xl text-xs font-bold flex items-center gap-1.5 transition-all active:scale-95"
       >
         <Navigation className="w-3.5 h-3.5 text-cyan-400" />
-        <span>Recenter Basin</span>
+        <span>Recenter</span>
       </button>
     </div>
   );

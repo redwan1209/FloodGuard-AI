@@ -11,7 +11,8 @@ import {
   RotateCcw,
   ArrowRight,
   Database,
-  Cpu
+  Cpu,
+  Flame
 } from 'lucide-react';
 
 interface JudgeDemoGuideProps {
@@ -45,27 +46,36 @@ export const JudgeDemoGuide: React.FC<JudgeDemoGuideProps> = ({
   };
 
   return (
-    <div className="bg-gradient-to-r from-slate-900 via-indigo-950/40 to-slate-900 border border-indigo-500/30 rounded-2xl p-4 sm:p-5 shadow-2xl relative overflow-hidden transition-all">
+    <section
+      aria-label="Judge Guided Evaluation Tour"
+      className="bg-gradient-to-r from-slate-900 via-indigo-950/40 to-slate-900 border border-indigo-500/30 rounded-2xl p-4 sm:p-5 shadow-2xl relative overflow-hidden transition-all"
+    >
       {/* Background Accent Glow */}
       <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
 
       {/* Header Bar */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-cyan-500 text-white flex items-center justify-center shadow-lg shadow-indigo-500/25 shrink-0">
+          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-cyan-500 text-white flex items-center justify-center shadow-lg shadow-indigo-500/25 shrink-0">
             <Zap className="w-5 h-5 text-amber-200 fill-amber-200" />
           </div>
           <div>
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               <h3 className="text-sm sm:text-base font-bold text-white tracking-tight">
-                2-Minute Hackathon Judge Demo Tour
+                2-Minute Hackathon Evaluation Tour
               </h3>
               <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
-                Decision Support Pipeline
+                End-to-End Decision Support
               </span>
+              {isSimulated && (
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-500/20 text-red-300 border border-red-500/40 flex items-center gap-1 animate-pulse">
+                  <Flame className="w-2.5 h-2.5 fill-red-400" />
+                  <span>Stress Test Active</span>
+                </span>
+              )}
             </div>
             <p className="text-xs text-slate-400 mt-0.5">
-              Quickly test end-to-end: <span className="text-slate-300 font-medium">Data Telemetry</span> → <span className="text-slate-300 font-medium">MCDA AI Model</span> → <span className="text-slate-300 font-medium">Scenario Stress</span> → <span className="text-slate-300 font-medium">Spatial Hazard Map</span> → <span className="text-slate-300 font-medium">Evacuation Triage</span>
+              Verify workflow: <span className="text-slate-300 font-medium">Data Telemetry</span> → <span className="text-slate-300 font-medium">MCDA AI Model</span> → <span className="text-slate-300 font-medium">Scenario Stress</span> → <span className="text-slate-300 font-medium">Hazard Map</span> → <span className="text-slate-300 font-medium">Evacuation Triage</span>
             </p>
           </div>
         </div>
@@ -74,7 +84,7 @@ export const JudgeDemoGuide: React.FC<JudgeDemoGuideProps> = ({
           {isSimulated && (
             <button
               onClick={onResetScenario}
-              className="flex items-center gap-1 text-xs font-semibold px-2.5 py-1.5 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 transition-colors shadow-sm"
+              className="flex items-center gap-1 text-xs font-bold px-2.5 py-1.5 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 transition-all shadow-sm active:scale-95"
               title="Reset simulation parameters to live baseline"
             >
               <RotateCcw className="w-3.5 h-3.5" />
@@ -84,9 +94,9 @@ export const JudgeDemoGuide: React.FC<JudgeDemoGuideProps> = ({
 
           <button
             onClick={() => setIsExpanded(!isExpanded)}
-            className="flex items-center gap-1 text-xs font-semibold px-2.5 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-colors"
+            className="flex items-center gap-1 text-xs font-semibold px-2.5 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition-colors"
           >
-            <span>{isExpanded ? 'Minimize Guide' : 'Open 2-Min Guide'}</span>
+            <span>{isExpanded ? 'Minimize Tour' : 'Open 2-Min Tour'}</span>
             {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
           </button>
         </div>
@@ -94,63 +104,63 @@ export const JudgeDemoGuide: React.FC<JudgeDemoGuideProps> = ({
 
       {/* Collapsible Steps Content */}
       {isExpanded && (
-        <div className="mt-4 pt-4 border-t border-slate-800/80 grid grid-cols-1 md:grid-cols-4 gap-3 animate-in fade-in duration-200">
+        <div className="mt-4 pt-4 border-t border-slate-800/80 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 animate-in fade-in duration-200">
           {/* Step 1: Telemetry Data */}
-          <div className="bg-slate-900/90 rounded-xl p-3.5 border border-slate-800 flex flex-col justify-between">
+          <div className="bg-slate-900/90 rounded-xl p-3.5 border border-slate-800 flex flex-col justify-between hover:border-slate-700 transition-all">
             <div>
               <div className="flex items-center justify-between text-[11px] font-bold text-cyan-400 uppercase tracking-wider mb-1">
-                <span className="flex items-center gap-1">
-                  <Database className="w-3 h-3" /> Step 1: Multi-Source Data
+                <span className="flex items-center gap-1.5">
+                  <Database className="w-3.5 h-3.5 text-cyan-400" /> Step 1: Multi-Source Data
                 </span>
-                <span className="text-slate-500 font-mono">01</span>
+                <span className="text-slate-500 font-mono font-bold">01</span>
               </div>
-              <p className="text-xs text-slate-300 font-semibold mt-1">
+              <p className="text-xs text-slate-200 font-bold mt-1">
                 Live APIs + Public Benchmarks
               </p>
               <p className="text-[11px] text-slate-400 mt-1 leading-relaxed">
-                Open-Meteo real-time rain + CWC gauge benchmarks + Copernicus/SRTM 30m DEM elevation.
+                Open-Meteo real-time rain + CWC gauge benchmarks + Copernicus/SRTM 30m DEM elevation data.
               </p>
             </div>
             <button
               onClick={() => onNavigateTab('analytics')}
-              className="mt-3 w-full py-1.5 px-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold flex items-center justify-center gap-1 transition-colors"
+              className="mt-3 w-full py-1.5 px-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white text-xs font-semibold flex items-center justify-center gap-1 transition-all"
             >
               <span>Inspect Hydrographs</span>
-              <ArrowRight className="w-3 h-3" />
+              <ArrowRight className="w-3 h-3 text-cyan-400" />
             </button>
           </div>
 
           {/* Step 2: Explainable MCDA Model */}
-          <div className="bg-slate-900/90 rounded-xl p-3.5 border border-slate-800 flex flex-col justify-between">
+          <div className="bg-slate-900/90 rounded-xl p-3.5 border border-slate-800 flex flex-col justify-between hover:border-slate-700 transition-all">
             <div>
               <div className="flex items-center justify-between text-[11px] font-bold text-indigo-400 uppercase tracking-wider mb-1">
-                <span className="flex items-center gap-1">
-                  <Cpu className="w-3 h-3" /> Step 2: 4-Pillar MCDA AI
+                <span className="flex items-center gap-1.5">
+                  <Cpu className="w-3.5 h-3.5 text-indigo-400" /> Step 2: 4-Pillar MCDA AI
                 </span>
-                <span className="text-slate-500 font-mono">02</span>
+                <span className="text-slate-500 font-mono font-bold">02</span>
               </div>
-              <p className="text-xs text-slate-300 font-semibold mt-1">
+              <p className="text-xs text-slate-200 font-bold mt-1">
                 Rigorous 100% Equal Formula
               </p>
               <p className="text-[11px] text-slate-400 mt-1 leading-relaxed">
-                35% Hydro + 30% Rain + 20% Topo + 15% History = Current Score <strong className="text-white">{assessment.overallScore}/100</strong>.
+                35% Hydro + 30% Rain + 20% Topo + 15% History = Current Score <strong className="text-white font-mono">{assessment.overallScore}/100</strong>.
               </p>
             </div>
-            <div className="mt-3 text-[11px] text-slate-400 italic bg-slate-950/60 p-1.5 rounded border border-slate-800/80 truncate">
+            <div className="mt-3 text-[11px] text-slate-400 italic bg-slate-950/70 p-1.5 rounded border border-slate-800/80 truncate">
               "{assessment.primaryDriver}"
             </div>
           </div>
 
           {/* Step 3: Trigger "What-If" Stress */}
-          <div className="bg-slate-900/90 rounded-xl p-3.5 border border-amber-500/30 flex flex-col justify-between">
+          <div className="bg-slate-900/90 rounded-xl p-3.5 border border-amber-500/30 flex flex-col justify-between hover:border-amber-500/50 transition-all">
             <div>
               <div className="flex items-center justify-between text-[11px] font-bold text-amber-400 uppercase tracking-wider mb-1">
-                <span className="flex items-center gap-1">
-                  <Sliders className="w-3 h-3" /> Step 3: "What-If" Stress
+                <span className="flex items-center gap-1.5">
+                  <Sliders className="w-3.5 h-3.5 text-amber-400" /> Step 3: "What-If" Stress
                 </span>
-                <span className="text-slate-500 font-mono">03</span>
+                <span className="text-slate-500 font-mono font-bold">03</span>
               </div>
-              <p className="text-xs text-slate-300 font-semibold mt-1">
+              <p className="text-xs text-slate-200 font-bold mt-1">
                 Simulate Cloudburst Surge
               </p>
               <p className="text-[11px] text-slate-400 mt-1 leading-relaxed">
@@ -160,14 +170,14 @@ export const JudgeDemoGuide: React.FC<JudgeDemoGuideProps> = ({
             <div className="mt-3 flex gap-1.5">
               <button
                 onClick={triggerCatastrophicDeluge}
-                className="flex-1 py-1.5 px-2 rounded-lg bg-red-600 hover:bg-red-500 text-white text-xs font-bold shadow-md shadow-red-600/20 transition-all text-center"
+                className="flex-1 py-1.5 px-2 rounded-lg bg-red-600 hover:bg-red-500 text-white text-xs font-bold shadow-md shadow-red-600/20 transition-all text-center active:scale-95"
               >
                 ⚡ Trigger Deluge
               </button>
               <button
                 onClick={() => onNavigateTab('simulator')}
-                className="py-1.5 px-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs transition-colors"
-                title="Open Simulator"
+                className="py-1.5 px-2.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs transition-colors"
+                title="Open Scenario Simulator"
               >
                 <Sliders className="w-3.5 h-3.5" />
               </button>
@@ -175,15 +185,15 @@ export const JudgeDemoGuide: React.FC<JudgeDemoGuideProps> = ({
           </div>
 
           {/* Step 4: Map & Evacuation Directives */}
-          <div className="bg-slate-900/90 rounded-xl p-3.5 border border-emerald-500/30 flex flex-col justify-between">
+          <div className="bg-slate-900/90 rounded-xl p-3.5 border border-emerald-500/30 flex flex-col justify-between hover:border-emerald-500/50 transition-all">
             <div>
               <div className="flex items-center justify-between text-[11px] font-bold text-emerald-400 uppercase tracking-wider mb-1">
-                <span className="flex items-center gap-1">
-                  <ShieldCheck className="w-3 h-3" /> Step 4: Map & Shelters
+                <span className="flex items-center gap-1.5">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> Step 4: Map & Shelters
                 </span>
-                <span className="text-slate-500 font-mono">04</span>
+                <span className="text-slate-500 font-mono font-bold">04</span>
               </div>
-              <p className="text-xs text-slate-300 font-semibold mt-1">
+              <p className="text-xs text-slate-200 font-bold mt-1">
                 Dynamic Corridors & Shelters
               </p>
               <p className="text-[11px] text-slate-400 mt-1 leading-relaxed">
@@ -193,14 +203,14 @@ export const JudgeDemoGuide: React.FC<JudgeDemoGuideProps> = ({
             <div className="mt-3 flex gap-1.5">
               <button
                 onClick={() => onNavigateTab('map')}
-                className="flex-1 py-1.5 px-2 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold transition-colors flex items-center justify-center gap-1"
+                className="flex-1 py-1.5 px-2 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold transition-all flex items-center justify-center gap-1 active:scale-95"
               >
                 <Map className="w-3 h-3" />
                 <span>Map</span>
               </button>
               <button
                 onClick={() => onNavigateTab('evacuation')}
-                className="flex-1 py-1.5 px-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-colors flex items-center justify-center gap-1"
+                className="flex-1 py-1.5 px-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-all flex items-center justify-center gap-1 active:scale-95"
               >
                 <ShieldCheck className="w-3 h-3" />
                 <span>Shelters</span>
@@ -209,6 +219,6 @@ export const JudgeDemoGuide: React.FC<JudgeDemoGuideProps> = ({
           </div>
         </div>
       )}
-    </div>
+    </section>
   );
 };

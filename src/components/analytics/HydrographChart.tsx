@@ -11,7 +11,7 @@ import {
   ReferenceLine,
   CartesianGrid
 } from 'recharts';
-import { Waves, TrendingUp, AlertCircle } from 'lucide-react';
+import { Waves, TrendingUp, AlertCircle, Clock } from 'lucide-react';
 
 interface HydrographChartProps {
   gauge: RiverGauge;
@@ -23,52 +23,52 @@ export const HydrographChart: React.FC<HydrographChartProps> = ({ gauge }) => {
   const trendSlope = gauge.trend === 'rising' ? 0.08 : (gauge.trend === 'falling' ? -0.05 : 0.01);
 
   const data = [
-    { time: '-12h', level: Number((base - 12 * trendSlope).toFixed(2)), stage: 'Past' },
-    { time: '-8h', level: Number((base - 8 * trendSlope).toFixed(2)), stage: 'Past' },
-    { time: '-4h', level: Number((base - 4 * trendSlope).toFixed(2)), stage: 'Past' },
-    { time: 'Now', level: Number(base.toFixed(2)), stage: 'Current' },
-    { time: '+4h', level: Number((base + 4 * trendSlope).toFixed(2)), stage: 'Forecast' },
-    { time: '+8h', level: Number((base + 8 * trendSlope).toFixed(2)), stage: 'Forecast' },
-    { time: '+12h', level: Number((base + 12 * trendSlope * 0.9).toFixed(2)), stage: 'Forecast' },
-    { time: '+18h', level: Number((base + 18 * trendSlope * 0.8).toFixed(2)), stage: 'Forecast' },
-    { time: '+24h', level: Number((base + 24 * trendSlope * 0.7).toFixed(2)), stage: 'Forecast' },
+    { time: '-12h', level: Number((base - 12 * trendSlope).toFixed(2)), stage: 'Recorded Past' },
+    { time: '-8h', level: Number((base - 8 * trendSlope).toFixed(2)), stage: 'Recorded Past' },
+    { time: '-4h', level: Number((base - 4 * trendSlope).toFixed(2)), stage: 'Recorded Past' },
+    { time: 'Now (T0)', level: Number(base.toFixed(2)), stage: 'Current Telemetry' },
+    { time: '+4h', level: Number((base + 4 * trendSlope).toFixed(2)), stage: 'Forecast Projection' },
+    { time: '+8h', level: Number((base + 8 * trendSlope).toFixed(2)), stage: 'Forecast Projection' },
+    { time: '+12h', level: Number((base + 12 * trendSlope * 0.9).toFixed(2)), stage: 'Forecast Projection' },
+    { time: '+18h', level: Number((base + 18 * trendSlope * 0.8).toFixed(2)), stage: 'Forecast Projection' },
+    { time: '+24h', level: Number((base + 24 * trendSlope * 0.7).toFixed(2)), stage: 'Forecast Projection' },
   ];
 
   const minLevel = Math.min(...data.map(d => d.level), gauge.warningLevelM - 1);
   const maxLevel = Math.max(...data.map(d => d.level), gauge.highestFloodLevelM + 0.5);
 
   return (
-    <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 shadow-lg">
-      <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+    <section aria-label={`${gauge.stationName} River Hydrograph`} className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 sm:p-6 shadow-xl space-y-4">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <div className="flex items-center gap-2">
             <Waves className="w-4 h-4 text-cyan-400" />
-            <h3 className="text-base font-bold text-white">{gauge.stationName} — Stage Hydrograph</h3>
+            <h3 className="text-base sm:text-lg font-bold text-white">{gauge.stationName} — Stage Hydrograph</h3>
           </div>
           <p className="text-xs text-slate-400 mt-0.5">
             Calibrated CWC Benchmark Hydrograph (Demo Telemetry) • Modeled on official station warning and danger marks (Meters MSL)
           </p>
         </div>
 
-        <div className="flex items-center gap-3 text-xs">
+        <div className="flex flex-wrap items-center gap-3 text-xs">
           <div className="flex items-center gap-1.5">
             <span className="w-3 h-0.5 bg-amber-400" />
-            <span className="text-amber-300 font-medium">Warning: {gauge.warningLevelM}m</span>
+            <span className="text-amber-300 font-semibold">Warning: {gauge.warningLevelM}m</span>
           </div>
           <div className="flex items-center gap-1.5">
             <span className="w-3 h-0.5 bg-red-500" />
-            <span className="text-red-400 font-medium">Danger: {gauge.dangerLevelM}m</span>
+            <span className="text-red-400 font-semibold">Danger: {gauge.dangerLevelM}m</span>
           </div>
           <div className="flex items-center gap-1.5">
             <span className="w-3 h-0.5 bg-purple-400 border-t border-dashed" />
-            <span className="text-purple-300 font-medium">HFL: {gauge.highestFloodLevelM}m</span>
+            <span className="text-purple-300 font-semibold">HFL: {gauge.highestFloodLevelM}m</span>
           </div>
         </div>
       </div>
 
-      <div className="h-64 w-full">
+      <div className="h-64 sm:h-72 w-full">
         <ResponsiveContainer width="100%" height="100%">
-          <ComposedChart data={data} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
+          <ComposedChart data={data} margin={{ top: 10, right: 20, left: -10, bottom: 0 }}>
             <defs>
               <linearGradient id="riverGradient" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor="#06b6d4" stopOpacity={0.4} />
@@ -85,13 +85,17 @@ export const HydrographChart: React.FC<HydrographChartProps> = ({ gauge }) => {
             />
             <Tooltip
               contentStyle={{
-                backgroundColor: '#0f172a',
+                backgroundColor: 'rgba(15, 23, 42, 0.95)',
                 borderColor: '#334155',
-                borderRadius: '0.75rem',
+                borderRadius: '0.875rem',
                 fontSize: '12px',
-                color: '#f8fafc'
+                color: '#f8fafc',
+                boxShadow: '0 10px 25px -5px rgba(0,0,0,0.5)'
               }}
-              formatter={(val: any) => [`${val} m MSL`, 'Water Level']}
+              formatter={(val: any, name: any, item: any) => [
+                `${val} m MSL (${item.payload.stage})`,
+                'Water Level'
+              ]}
             />
             <ReferenceLine
               y={gauge.warningLevelM}
@@ -111,6 +115,12 @@ export const HydrographChart: React.FC<HydrographChartProps> = ({ gauge }) => {
               strokeDasharray="2 2"
               label={{ value: 'Record HFL', position: 'insideTopLeft', fill: '#a855f7', fontSize: 10 }}
             />
+            <ReferenceLine
+              x="Now (T0)"
+              stroke="#38bdf8"
+              strokeDasharray="3 3"
+              label={{ value: 'T0: Current', position: 'top', fill: '#38bdf8', fontSize: 10 }}
+            />
             <Area
               type="monotone"
               dataKey="level"
@@ -124,28 +134,28 @@ export const HydrographChart: React.FC<HydrographChartProps> = ({ gauge }) => {
       </div>
 
       <div className="mt-3 pt-3 border-t border-slate-800/80 grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
-        <div>
-          <span className="text-slate-400 block">Current Stage</span>
-          <strong className="text-white font-mono text-sm">{gauge.currentLevelM} m</strong>
+        <div className="bg-slate-950/60 p-2.5 rounded-lg border border-slate-800">
+          <span className="text-slate-400 block text-[11px]">Current Stage</span>
+          <strong className="text-white font-mono text-sm">{gauge.currentLevelM} m MSL</strong>
         </div>
-        <div>
-          <span className="text-slate-400 block">Discharge Flow</span>
+        <div className="bg-slate-950/60 p-2.5 rounded-lg border border-slate-800">
+          <span className="text-slate-400 block text-[11px]">Discharge Flow</span>
           <strong className="text-cyan-400 font-mono text-sm">{gauge.flowDischargeCusecs.toLocaleString()} cusecs</strong>
         </div>
-        <div>
-          <span className="text-slate-400 block">Current Trend</span>
-          <strong className="text-amber-400 font-semibold capitalize flex items-center gap-1">
-            <TrendingUp className="w-3 h-3" />
+        <div className="bg-slate-950/60 p-2.5 rounded-lg border border-slate-800">
+          <span className="text-slate-400 block text-[11px]">Current Trend</span>
+          <strong className="text-amber-400 font-semibold capitalize flex items-center gap-1 mt-0.5">
+            <TrendingUp className="w-3.5 h-3.5" />
             {gauge.trend}
           </strong>
         </div>
-        <div>
-          <span className="text-slate-400 block">Margin to Danger</span>
-          <strong className={gauge.currentLevelM >= gauge.dangerLevelM ? 'text-red-400 font-mono text-sm' : 'text-emerald-400 font-mono text-sm'}>
+        <div className="bg-slate-950/60 p-2.5 rounded-lg border border-slate-800">
+          <span className="text-slate-400 block text-[11px]">Margin to Danger</span>
+          <strong className={`font-mono text-sm ${gauge.currentLevelM >= gauge.dangerLevelM ? 'text-red-400' : 'text-emerald-400'}`}>
             {(gauge.dangerLevelM - gauge.currentLevelM).toFixed(2)} m
           </strong>
         </div>
       </div>
-    </div>
+    </section>
   );
 };

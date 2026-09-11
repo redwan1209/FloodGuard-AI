@@ -284,34 +284,50 @@ export const App: React.FC = () => {
       </main>
 
       {/* Footer */}
-      <footer className="bg-slate-900/60 border-t border-slate-800/80 py-6 mt-12 text-xs text-slate-500">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <span className="font-bold text-slate-300">FloodGuard AI</span>
-            <span>— AI-Powered Flood Prediction & Decision Support System</span>
+      <footer className="bg-slate-900/80 border-t border-slate-800/90 py-8 mt-12 text-xs text-slate-400">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-2.5">
+              <span className="font-bold text-white text-sm">FloodGuard AI</span>
+              <span className="text-slate-500">•</span>
+              <span className="text-slate-300">AI-Powered Flood Prediction & Decision Support System</span>
+              <span className="hidden sm:inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                Engine Operational
+              </span>
+            </div>
+
+            <nav className="flex flex-wrap items-center gap-3 sm:gap-4 text-xs" aria-label="Footer Navigation">
+              <button
+                onClick={() => setActiveTab('about')}
+                className="text-slate-400 hover:text-cyan-400 transition-colors font-medium"
+              >
+                Developer Profile
+              </button>
+              <span className="text-slate-600">•</span>
+              <button
+                onClick={() => setIsMethodologyOpen(true)}
+                className="text-slate-400 hover:text-cyan-400 transition-colors font-medium"
+              >
+                Methodology & Data Sources
+              </button>
+              <span className="text-slate-600">•</span>
+              <button
+                onClick={() => setIsSosOpen(true)}
+                className="text-red-400 hover:text-red-300 font-bold transition-colors"
+              >
+                Emergency Helplines (112)
+              </button>
+            </nav>
           </div>
 
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => setActiveTab('about')}
-              className="text-slate-400 hover:text-cyan-400 transition-colors"
-            >
-              Developer Profile
-            </button>
-            <span>•</span>
-            <button
-              onClick={() => setIsMethodologyOpen(true)}
-              className="text-slate-400 hover:text-cyan-400 transition-colors"
-            >
-              Methodology & Data Sources
-            </button>
-            <span>•</span>
-            <button
-              onClick={() => setIsSosOpen(true)}
-              className="text-red-400 hover:text-red-300 font-semibold"
-            >
-              Emergency Helplines (112)
-            </button>
+          <div className="pt-4 border-t border-slate-800/60 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-slate-500">
+            <p>
+              Hackathon prototype intended for research & demonstration. Data calibrated on Open-Meteo, CWC benchmarks, and SRTM DEM datasets.
+            </p>
+            <p className="shrink-0">
+              Always comply with official directives from IMD, CWC, and NDMA.
+            </p>
           </div>
         </div>
       </footer>
